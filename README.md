@@ -7,7 +7,7 @@ This project uses FVM for manage versions
 
 [Read the FVM documentation](https://fvm.app)
 
-flutter SDK Version : 2.0.6
+flutter SDK Version : 2.10.4
 
 Install dependencies
 
