@@ -104,7 +104,7 @@ class _CartDrawerWebState extends State<CartDrawerWeb> {
       child: MultiBlocListener(
         listeners: [
           BlocListener(
-            cubit: _fetchCartCubit,
+            bloc: _fetchCartCubit,
             listener: (context, state) {
               if (state is FetchCartSuccess) {
                 setState(() {
@@ -115,7 +115,7 @@ class _CartDrawerWebState extends State<CartDrawerWeb> {
             },
           ),
           BlocListener(
-            cubit: _updateQuantityCubit,
+            bloc: _updateQuantityCubit,
             listener: (context, state) async {
               if (state is UpdateQuantitySuccess) {
                 await _fetchCartCubit.reload();
@@ -161,7 +161,7 @@ class _CartDrawerWebState extends State<CartDrawerWeb> {
             },
           ),
           BlocListener(
-            cubit: _cartStockValidationCubit,
+            bloc: _cartStockValidationCubit,
             listener: (context, state) async {
               if (state is CartStockValidationSuccess) {
                 if (_goBack) {
@@ -331,7 +331,7 @@ class _CartDrawerWebState extends State<CartDrawerWeb> {
                     categoryCartId == 0 // >>>>>>>>>>>> CART <<<<<<<<<<<<<<<
                         ? Expanded(
                             child: BlocBuilder(
-                              cubit: _fetchCartCubit,
+                              bloc: _fetchCartCubit,
                               builder: (context, state) =>
                                   AppTrans.SharedAxisTransitionSwitcher(
                                 transitionType:
@@ -384,7 +384,7 @@ class _CartDrawerWebState extends State<CartDrawerWeb> {
                                                         (context, index) {
                                                       /*Cart _item =
                                                           state.cart[index];*/
-                                                          Cart _item;
+                                                      Cart _item;
                                                       return CartItemWidgetWeb(
                                                           itemIndex: index,
                                                           cart: _item,
@@ -437,8 +437,10 @@ class _CartDrawerWebState extends State<CartDrawerWeb> {
                                                           "Silahkan pilih produk yang anda inginkan untuk mengisinya",
                                                       labelBtn: "Mulai Belanja",
                                                       onClick: () {
-                                                        AppExt.popScreen(context);
-                                                        context.beamToNamed('/');
+                                                        AppExt.popScreen(
+                                                            context);
+                                                        context
+                                                            .beamToNamed('/');
                                                       },
                                                     ),
                                                   )
@@ -446,7 +448,7 @@ class _CartDrawerWebState extends State<CartDrawerWeb> {
                               ),
                             ),
                           )
-                         : SizedBox()
+                        : SizedBox()
                   ],
                 )),
           ),

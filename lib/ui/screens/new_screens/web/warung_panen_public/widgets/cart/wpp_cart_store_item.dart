@@ -67,7 +67,7 @@ class _WppCartStoreItemState extends State<WppCartStoreItem> {
   Widget build(BuildContext context) {
     debugPrint("indexStore ${widget.indexStore} indexItem ${widget.indexItem}");
     return BlocListener<DeleteCartItemCubit, DeleteCartItemState>(
-      cubit: _deleteCartItemCubit,
+      bloc: _deleteCartItemCubit,
       listener: (context, state) {
         if (state is DeleteCartItemSuccess) {
           context.read<FetchCartCubit>().load();
@@ -128,7 +128,7 @@ class _WppCartStoreItemState extends State<WppCartStoreItem> {
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               BlocBuilder<DeleteCartItemCubit, DeleteCartItemState>(
-                cubit: _deleteCartItemCubit,
+                bloc: _deleteCartItemCubit,
                 builder: (context, state) {
                   if (state is DeleteCartItemLoading) {
                     return CircularProgressIndicator();
@@ -142,14 +142,14 @@ class _WppCartStoreItemState extends State<WppCartStoreItem> {
                     onPressed: () {
                       // LoadingDialog.show(context);
                       context
-                            .read<AddToCartOfflineCubit>()
-                            .deleteProduct(widget.productId);
+                          .read<AddToCartOfflineCubit>()
+                          .deleteProduct(widget.productId);
 
-                        final offlineCart =
-                            context.read<AddToCartOfflineCubit>().state;
-                        // _fetchCartCubit.fetchCartOffline(List<CartResponseElement>.from(offlineCart.cart));
-                        context.read<FetchCartCubit>().fetchCartOffline(
-                            List<CartResponseElement>.from(offlineCart.cart));
+                      final offlineCart =
+                          context.read<AddToCartOfflineCubit>().state;
+                      // _fetchCartCubit.fetchCartOffline(List<CartResponseElement>.from(offlineCart.cart));
+                      context.read<FetchCartCubit>().fetchCartOffline(
+                          List<CartResponseElement>.from(offlineCart.cart));
                     },
                   );
                 },
@@ -168,8 +168,8 @@ class _WppCartStoreItemState extends State<WppCartStoreItem> {
                     splashColor: Colors.orangeAccent,
                     iconSize: 30,
                     color: (qty > 1)
-                      ? Theme.of(context).primaryColor
-                      : Colors.grey,
+                        ? Theme.of(context).primaryColor
+                        : Colors.grey,
                     icon: Icon(
                       Icons.remove_circle_outline,
                     ),

@@ -98,7 +98,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
     return MultiBlocProvider(
       providers: [BlocProvider(create: (_) => _fetchRecipentCubit)],
       child: BlocListener(
-        cubit: _fetchRecipentCubit,
+        bloc: _fetchRecipentCubit,
         listener: (context, state) {
           if (state is FetchRecipentSuccess) {
             setState(() {

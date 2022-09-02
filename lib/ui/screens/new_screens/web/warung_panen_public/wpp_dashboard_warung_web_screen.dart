@@ -70,7 +70,7 @@ class _WppDashboardWarungWebScreenState
   void initState() {
     userDataCubit = BlocProvider.of<UserDataCubit>(context);
     _reshopRepo.setSlugReseller(slug: widget.slugReseller);
-    
+
     _fetchProductsResellerShopCubit = FetchProductsResellerShopCubit();
     _fetchProductsResellerShopCubit
       ..fetchProductsList(
@@ -79,32 +79,32 @@ class _WppDashboardWarungWebScreenState
       ..fetchData(nameSlugReseller: widget.slugReseller);
     _fetchSelectedRecipent = FetchSelectedRecipentCubit()
       ..fetchSelectedrecipentUserNoAuthDashboard();
-      
-    subdistrictId = _recipentRepo.getSelectedRecipentNoAuthDashboard()['subdistrict_id'] ?? 0;
 
-  
-    
+    subdistrictId =
+        _recipentRepo.getSelectedRecipentNoAuthDashboard()['subdistrict_id'] ??
+            0;
+
     if (_recipentRepo.getFromWppDetailProductCheck() != true) {
-      
-      if (_recipentRepo.getSelectedRecipentNoAuthDashboard() == null || _recipentRepo.getSelectedRecipentNoAuthDashboard()['subdistrict_id'] == null) {
+      if (_recipentRepo.getSelectedRecipentNoAuthDashboard() == null ||
+          _recipentRepo
+                  .getSelectedRecipentNoAuthDashboard()['subdistrict_id'] ==
+              null) {
         WidgetsBinding.instance.addPostFrameCallback((_) {
           bsAddress();
         });
-      }else{
+      } else {
         // debugPrint("KECAMATAN ID DASHBOARD : ${_recipentRepo.getSelectedRecipentNoAuthDashboard()['subdistrict_id']} ");
         _fetchProductsResellerShopCubit.fetchProductsList(
             nameSlugReseller: widget.slugReseller,
             subdistrictId: subdistrictId);
       }
       _recipentRepo.gs.remove('recipentUserNoAuthDashboard');
-    }else{
+    } else {
       _recipentRepo.isFromWppDetailProductDetail(value: false);
-       _fetchProductsResellerShopCubit.fetchProductsList(
-            nameSlugReseller: widget.slugReseller,
-            subdistrictId: subdistrictId);
+      _fetchProductsResellerShopCubit.fetchProductsList(
+          nameSlugReseller: widget.slugReseller, subdistrictId: subdistrictId);
       _recipentRepo.gs.remove('recipentUserNoAuthDashboard');
     }
-    
 
     super.initState();
   }
@@ -168,7 +168,7 @@ class _WppDashboardWarungWebScreenState
       child: MultiBlocListener(
         listeners: [
           BlocListener(
-              cubit: _fetchProductsResellerShopCubit,
+              bloc: _fetchProductsResellerShopCubit,
               listener: (ctx, state) {
                 if (state is FetchProductsResellerShopSuccess) {
                   if (state.resellerProducts.length == 0) {
@@ -182,7 +182,6 @@ class _WppDashboardWarungWebScreenState
                           "Tapi jangan khawatir, yuk cari warung disekitarmu",
                       isRouteToListWarung: true,
                       onTap: (subdistrictId, subdistrictVal) {
-                        
                         setState(() {
                           subdistrict = subdistrictVal;
                         });
@@ -190,23 +189,23 @@ class _WppDashboardWarungWebScreenState
                             nameSlugReseller: widget.slugReseller,
                             subdistrictId: subdistrictId);
                         _fetchSelectedRecipent = FetchSelectedRecipentCubit()
-                        ..fetchSelectedrecipentUserNoAuthDashboard();
+                          ..fetchSelectedrecipentUserNoAuthDashboard();
                       },
                     );
                   }
                 }
                 if (state is FetchProductsResellerShopFailure) {
                   ScaffoldMessenger.of(context)
-                  ..hideCurrentSnackBar()
-                  ..showSnackBar(
-                    SnackBar(
-                      margin: EdgeInsets.zero,
-                      duration: Duration(seconds: 2),
-                      content: Text('Terjadi Kesalahan'),
-                      backgroundColor: Colors.red,
-                      behavior: SnackBarBehavior.floating,
-                    ),
-                  );
+                    ..hideCurrentSnackBar()
+                    ..showSnackBar(
+                      SnackBar(
+                        margin: EdgeInsets.zero,
+                        duration: Duration(seconds: 2),
+                        content: Text('Terjadi Kesalahan'),
+                        backgroundColor: Colors.red,
+                        behavior: SnackBarBehavior.floating,
+                      ),
+                    );
                 }
               })
         ],
@@ -260,7 +259,7 @@ class _WppDashboardWarungWebScreenState
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           BlocBuilder(
-                              cubit: _fetchDataResellerShopCubit,
+                              bloc: _fetchDataResellerShopCubit,
                               builder: (context, state) => state
                                       is FetchDataResellerShopLoading
                                   ? Center(
@@ -511,7 +510,7 @@ class _WppDashboardWarungWebScreenState
                             height: 12,
                           ),
                           BlocBuilder(
-                              cubit: _fetchSelectedRecipent,
+                              bloc: _fetchSelectedRecipent,
                               builder: (context, state) => state
                                       is FetchSelectedRecipentLoading
                                   ? Center(
@@ -527,32 +526,38 @@ class _WppDashboardWarungWebScreenState
                                                   const EdgeInsets.symmetric(
                                                       horizontal: 15),
                                               child: MouseRegion(
-                                                cursor: SystemMouseCursors.click,
+                                                cursor:
+                                                    SystemMouseCursors.click,
                                                 child: GestureDetector(
                                                   onTap: () => bsAddress(),
                                                   child: Row(
                                                     children: [
                                                       Icon(
-                                                        Icons.location_on_outlined,
+                                                        Icons
+                                                            .location_on_outlined,
                                                       ),
                                                       SizedBox(
                                                         width: 10,
                                                       ),
                                                       RichText(
                                                           text: TextSpan(
-                                                              text: "Dikirim ke ",
+                                                              text:
+                                                                  "Dikirim ke ",
                                                               style: AppTypo
                                                                       .LatoBold
                                                                   .copyWith(
-                                                                      fontSize: 12),
-                                                              children: <TextSpan>[
+                                                                      fontSize:
+                                                                          12),
+                                                              children: <
+                                                                  TextSpan>[
                                                             TextSpan(
                                                               text:
                                                                   "${state.recipent.subdistrict}. ${state.recipent.city}",
                                                               style: AppTypo
                                                                       .LatoBold
                                                                   .copyWith(
-                                                                      fontSize: 12,
+                                                                      fontSize:
+                                                                          12,
                                                                       color: AppColor
                                                                           .primary),
                                                             )
@@ -591,7 +596,7 @@ class _WppDashboardWarungWebScreenState
                     //================================== BODY ====================================
                     Expanded(
                       child: BlocBuilder(
-                          cubit: _fetchProductsResellerShopCubit,
+                          bloc: _fetchProductsResellerShopCubit,
                           builder: (context, state) {
                             return state is FetchProductsResellerShopLoading
                                 ? Center(
@@ -603,7 +608,9 @@ class _WppDashboardWarungWebScreenState
                                       )
                                     : state is FetchProductsResellerShopSuccess
                                         ? state.resellerProducts.length > 0
-                                            ? StaggeredGridView.countBuilder(
+                                            ?
+                                            // StaggeredGridView.countBuilder(
+                                            MasonryGridView.count(
                                                 padding: EdgeInsets.only(
                                                   top: 20,
                                                   left: 15,
@@ -628,9 +635,9 @@ class _WppDashboardWarungWebScreenState
                                                             null,
                                                   );
                                                 },
-                                                staggeredTileBuilder: (int
-                                                        index) =>
-                                                    new StaggeredTile.fit(1),
+                                                // staggeredTileBuilder: (int
+                                                //         index) =>
+                                                //     new StaggeredTile.fit(1),
                                                 mainAxisSpacing: 13,
                                                 crossAxisSpacing: 13,
                                               )

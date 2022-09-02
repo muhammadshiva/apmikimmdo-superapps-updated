@@ -98,7 +98,7 @@ class _TokoSayaScreenState extends State<TokoSayaScreen> {
         child: MultiBlocListener(
           listeners: [
             BlocListener(
-                cubit: _removeProductTokoSayaCubit,
+                bloc: _removeProductTokoSayaCubit,
                 listener: (context, state) {
                   if (state is RemoveProductTokoSayaLoading) {
                     LoadingDialog.show(context);
@@ -122,7 +122,7 @@ class _TokoSayaScreenState extends State<TokoSayaScreen> {
                   }
                 }),
             BlocListener(
-                cubit: _fetchUserCubit,
+                bloc: _fetchUserCubit,
                 listener: (context, state) {
                   if (state is FetchUserSuccess) {
                     debugPrint("MASUKK SINI");
@@ -136,9 +136,9 @@ class _TokoSayaScreenState extends State<TokoSayaScreen> {
                 })
           ],
           child: BlocBuilder(
-              cubit: _fetchProductTokoSayaCubit,
+              bloc: _fetchProductTokoSayaCubit,
               builder: (context, fetchProductTokoSayaState) => BlocBuilder(
-                  cubit: _fetchUserCubit,
+                  bloc: _fetchUserCubit,
                   builder: (context, fetchUserState) =>
                       //======================= ERROR HANDLING ================
                       // fetchUserState is FetchUserFailure ||
@@ -193,8 +193,8 @@ class _TokoSayaScreenState extends State<TokoSayaScreen> {
                                                                       padding: EdgeInsets
                                                                           .only(
                                                                               top: 180),
-                                                                      child: StaggeredGridView
-                                                                          .countBuilder(
+                                                                      child: MasonryGridView
+                                                                          .count(
                                                                         padding:
                                                                             EdgeInsets.only(
                                                                           top:
@@ -237,9 +237,9 @@ class _TokoSayaScreenState extends State<TokoSayaScreen> {
                                                                             },
                                                                           );
                                                                         },
-                                                                        staggeredTileBuilder:
-                                                                            (int index) =>
-                                                                                new StaggeredTile.fit(1),
+                                                                        // staggeredTileBuilder:
+                                                                        //     (int index) =>
+                                                                        //         new StaggeredTile.fit(1),
                                                                         mainAxisSpacing:
                                                                             13,
                                                                         crossAxisSpacing:

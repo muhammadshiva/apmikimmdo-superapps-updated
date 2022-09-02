@@ -96,7 +96,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
         child: MultiBlocListener(
           listeners: [
             BlocListener(
-                cubit: _addOrderCubit,
+                bloc: _addOrderCubit,
                 listener: (context, state) {
                   if (state is AddOrderSuccess) {
                     AppExt.popScreen(context);
@@ -239,18 +239,26 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                                   ),
                                                   Expanded(
                                                     child: Column(
-                                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
                                                       children: [
                                                         Text(
                                                             "${cartProduct.name}",
                                                             maxLines: 2,
-                                                            overflow: TextOverflow
-                                                                .ellipsis,
-                                                            style: AppTypo.body2Lato
+                                                            overflow:
+                                                                TextOverflow
+                                                                    .ellipsis,
+                                                            style: AppTypo
+                                                                .body2Lato
                                                                 .copyWith(
-                                                                    fontSize: 14)),
-                                                        cartProduct.productVariantName != null ?
-                                                        Text(cartProduct.productVariantName) : SizedBox()
+                                                                    fontSize:
+                                                                        14)),
+                                                        cartProduct.productVariantName !=
+                                                                null
+                                                            ? Text(cartProduct
+                                                                .productVariantName)
+                                                            : SizedBox()
                                                       ],
                                                     ),
                                                   ),

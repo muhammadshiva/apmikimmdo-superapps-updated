@@ -244,7 +244,7 @@ class _SignInScreenState extends State<SignInScreen> {
                               height: _screenWidth * (5 / 100),
                             ),
                             BlocConsumer(
-                              cubit: _directSignInCubit,
+                              bloc: _directSignInCubit,
                               listener: (context, state) {},
                               builder: (context, _directState) {
                                 return UiDebugSwitcher(

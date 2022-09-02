@@ -85,7 +85,7 @@ class _SaldoHomeScreenState extends State<SaldoHomeScreen> {
               ),
               Expanded(
                 child: BlocBuilder(
-                  cubit: _fetchWalletCubit,
+                  bloc: _fetchWalletCubit,
                   builder: (context, state) => Container(
                     padding: const EdgeInsets.fromLTRB(16, 0, 16, 10),
                     child: state is FetchWalletLoading
@@ -108,18 +108,27 @@ class _SaldoHomeScreenState extends State<SaldoHomeScreen> {
                                     },
                                     itemBuilder: (context, index) {
                                       return InkWell(
-                                        onTap: (){
-                                          if (state.wallets[index].type == "commission")
-                                            AppExt.pushScreen(context, DetailSaldoKomisiScreen(
-                                              logId: state.wallets[index].id,
-                                            ));
-                                          if (state.wallets[index].type == "withdrawal")
-                                            AppExt.pushScreen(context, DetailSaldoPenarikanScreen()); 
-                                          if (state.wallets[index].type == "sale")
-                                            AppExt.pushScreen(context, DetailSaldoPenjualanScreen()); 
+                                        onTap: () {
+                                          if (state.wallets[index].type ==
+                                              "commission")
+                                            AppExt.pushScreen(
+                                                context,
+                                                DetailSaldoKomisiScreen(
+                                                  logId:
+                                                      state.wallets[index].id,
+                                                ));
+                                          if (state.wallets[index].type ==
+                                              "withdrawal")
+                                            AppExt.pushScreen(context,
+                                                DetailSaldoPenarikanScreen());
+                                          if (state.wallets[index].type ==
+                                              "sale")
+                                            AppExt.pushScreen(context,
+                                                DetailSaldoPenjualanScreen());
                                         },
                                         child: Container(
-                                          margin: EdgeInsets.fromLTRB(0, 5, 0, 5),
+                                          margin:
+                                              EdgeInsets.fromLTRB(0, 5, 0, 5),
                                           child: Row(
                                             mainAxisAlignment:
                                                 MainAxisAlignment.spaceBetween,
@@ -136,18 +145,21 @@ class _SaldoHomeScreenState extends State<SaldoHomeScreen> {
                                                   ),
                                                   Column(
                                                     crossAxisAlignment:
-                                                        CrossAxisAlignment.start,
+                                                        CrossAxisAlignment
+                                                            .start,
                                                     children: [
                                                       Text(
-                                                        state.wallets[index].title,
+                                                        state.wallets[index]
+                                                            .title,
                                                         style: AppTypo.caption,
                                                       ),
                                                       Text(
-                                                        state.wallets[index].date,
+                                                        state.wallets[index]
+                                                            .date,
                                                         style: AppTypo.caption
                                                             .copyWith(
-                                                                color:
-                                                                    Colors.grey),
+                                                                color: Colors
+                                                                    .grey),
                                                       ),
                                                     ],
                                                   ),
@@ -159,7 +171,8 @@ class _SaldoHomeScreenState extends State<SaldoHomeScreen> {
                                                 children: [
                                                   Row(
                                                     children: [
-                                                      state.wallets[index].type ==
+                                                      state.wallets[index]
+                                                                  .type ==
                                                               "withdrawal"
                                                           ? Icon(EvaIcons.minus,
                                                               size: 12,

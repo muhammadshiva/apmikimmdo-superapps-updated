@@ -90,7 +90,7 @@ class _TagNewsActivityScreenState extends State<TagNewsActivityScreen> {
           child: MultiBlocListener(
             listeners: [
               BlocListener(
-                cubit: _fetchTagNewsActivityCubit,
+                bloc: _fetchTagNewsActivityCubit,
                 listener: (context, state) {
                   if (state is FetchTagNewsActivitySuccess) {
                     for (int i = 0; i < state.tagNewsActivity.length + 1; i++) {
@@ -120,7 +120,7 @@ class _TagNewsActivityScreenState extends State<TagNewsActivityScreen> {
                   appBar: _buildAppBar(
                       context, _screenWidth, _fetchTagNewsActivityCubit),
                   body: BlocBuilder(
-                    cubit: _fetchNewsActivityByTagCubit,
+                    bloc: _fetchNewsActivityByTagCubit,
                     builder: (context, state) =>
                         AppTrans.SharedAxisTransitionSwitcher(
                       fillColor: Colors.transparent,
@@ -259,7 +259,7 @@ class _TagNewsActivityScreenState extends State<TagNewsActivityScreen> {
               height: 20,
             ),
             BlocBuilder(
-              cubit: _fetchTagNewsActivityCubit,
+              bloc: _fetchTagNewsActivityCubit,
               builder: (context, fetchTagNewsActivityState) {
                 return fetchTagNewsActivityState is FetchTagNewsActivityLoading
                     ? Container(

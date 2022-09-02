@@ -114,7 +114,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen>
         child: MultiBlocListener(
           listeners: [
             BlocListener(
-              cubit: _addToCartCubit,
+              bloc: _addToCartCubit,
               listener: (_, state) {
                 if (state is AddToCartFailure) {
                   AppExt.popScreen(context);
@@ -151,7 +151,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen>
                   backgroundColor: AppColor.textPrimaryInverted,
                   body: SafeArea(
                     child: BlocBuilder(
-                      cubit: _fetchProductDetailCubit,
+                      bloc: _fetchProductDetailCubit,
                       builder: (context, state) {
                         return AppTrans.SharedAxisTransitionSwitcher(
                           fillColor: Colors.transparent,

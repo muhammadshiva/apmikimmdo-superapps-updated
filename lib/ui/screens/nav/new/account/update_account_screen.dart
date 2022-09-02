@@ -154,7 +154,7 @@ class _UpdateAccountScreenState extends State<UpdateAccountScreen> {
               body: MultiBlocListener(
                 listeners: [
                   BlocListener(
-                    cubit: _uploadUserAvatarCubit,
+                    bloc: _uploadUserAvatarCubit,
                     listener: (_, state) async {
                       if (state is UploadUserAvatarSuccess) {
                         AppExt.popScreen(context);
@@ -174,7 +174,7 @@ class _UpdateAccountScreenState extends State<UpdateAccountScreen> {
                     },
                   ),
                   BlocListener(
-                    cubit: _editUserProfileCubit,
+                    bloc: _editUserProfileCubit,
                     listener: (context, state) {
                       if (state is EditUserProfileFailure) {
                         AppExt.popScreen(context);

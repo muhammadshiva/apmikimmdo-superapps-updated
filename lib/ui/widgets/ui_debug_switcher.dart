@@ -14,7 +14,7 @@ class UiDebugSwitcher extends StatelessWidget {
     var data = BlocProvider.of<UiDebugSwitcherCubit>(context);
 
     return BlocBuilder(
-      cubit: data,
+      bloc: data,
       builder: (context, state) {
         if (!config.isQA) return SizedBox();
         if (!state) return SizedBox();

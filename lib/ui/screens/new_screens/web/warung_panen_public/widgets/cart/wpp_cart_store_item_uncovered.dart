@@ -22,7 +22,7 @@ class WppCartStoreItemUncovered extends StatefulWidget {
     @required this.id,
     this.indexItem,
     this.indexStore,
-    this.productId, 
+    this.productId,
     @required this.variantSelected,
   }) : super(key: key);
 
@@ -37,7 +37,8 @@ class WppCartStoreItemUncovered extends StatefulWidget {
   final int productId;
 
   @override
-  _WppCartStoreItemUncoveredState createState() => _WppCartStoreItemUncoveredState();
+  _WppCartStoreItemUncoveredState createState() =>
+      _WppCartStoreItemUncoveredState();
 }
 
 class _WppCartStoreItemUncoveredState extends State<WppCartStoreItemUncovered> {
@@ -66,7 +67,7 @@ class _WppCartStoreItemUncoveredState extends State<WppCartStoreItemUncovered> {
   Widget build(BuildContext context) {
     debugPrint("indexStore ${widget.indexStore} indexItem ${widget.indexItem}");
     return BlocListener<DeleteCartItemCubit, DeleteCartItemState>(
-      cubit: _deleteCartItemCubit,
+      bloc: _deleteCartItemCubit,
       listener: (context, state) {
         if (state is DeleteCartItemSuccess) {
           context.read<FetchCartCubit>().load();
@@ -97,8 +98,8 @@ class _WppCartStoreItemUncoveredState extends State<WppCartStoreItemUncovered> {
                       overflow: TextOverflow.ellipsis,
                     ),
                     Text("Rp ${AppExt.toRupiah(widget.harga ?? 0)}",
-                        style: AppTypo.caption
-                            .copyWith(fontWeight: FontWeight.w600, color: Colors.grey)),
+                        style: AppTypo.caption.copyWith(
+                            fontWeight: FontWeight.w600, color: Colors.grey)),
                   ],
                 ),
               )
@@ -107,7 +108,7 @@ class _WppCartStoreItemUncoveredState extends State<WppCartStoreItemUncovered> {
           Align(
             alignment: Alignment.centerRight,
             child: BlocBuilder<DeleteCartItemCubit, DeleteCartItemState>(
-              cubit: _deleteCartItemCubit,
+              bloc: _deleteCartItemCubit,
               builder: (context, state) {
                 if (state is DeleteCartItemLoading) {
                   return CircularProgressIndicator();
@@ -121,7 +122,7 @@ class _WppCartStoreItemUncoveredState extends State<WppCartStoreItemUncovered> {
                   onPressed: () {
                     // LoadingDialog.show(context);
                     if (BlocProvider.of<UserDataCubit>(context).state.user ==
-                        null &&
+                            null &&
                         kIsWeb) {
                       context
                           .read<AddToCartOfflineCubit>()
@@ -133,7 +134,8 @@ class _WppCartStoreItemUncoveredState extends State<WppCartStoreItemUncovered> {
                       context.read<FetchCartCubit>().fetchCartOffline(
                           List<CartResponseElement>.from(offlineCart.cart));
                     } else {
-                      _deleteCartItemCubit.deleteCartItem(listCartId: [widget.id]);
+                      _deleteCartItemCubit
+                          .deleteCartItem(listCartId: [widget.id]);
                       // context.read<FetchCartCubit>().load();
                     }
                   },

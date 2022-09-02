@@ -18,18 +18,18 @@ class FetchTransactionNewBloc
 
   final TransactionRepository repository = TransactionRepository();
 
-  @override
-  Stream<Transition<FetchTransactionNewEvent, FetchTransactionNewState>>
-      transformEvents(
-    Stream<FetchTransactionNewEvent> events,
-    TransitionFunction<FetchTransactionNewEvent, FetchTransactionNewState>
-        transitionFn,
-  ) {
-    return super.transformEvents(
-      events.throttleTime(const Duration(milliseconds: 500)),
-      transitionFn,
-    );
-  }
+  // @override
+  // Stream<Transition<FetchTransactionNewEvent, FetchTransactionNewState>>
+  //     transformEvents(
+  //   Stream<FetchTransactionNewEvent> events,
+  //   TransitionFunction<FetchTransactionNewEvent, FetchTransactionNewState>
+  //       transitionFn,
+  // ) {
+  //   return super.transformEvents(
+  //     events.throttleTime(const Duration(milliseconds: 500)),
+  //     transitionFn,
+  //   );
+  // }
 
   @override
   Stream<FetchTransactionNewState> mapEventToState(
@@ -40,7 +40,6 @@ class FetchTransactionNewBloc
       yield await _mapTransactionFetchedToState(state, event);
     }
     if (event is TransactionLoadedNext) {
-
       yield state.copyWith(status: FetchTransactionNewStatus.loadingNext);
       yield await _mapTransactionFetchedNextPageToState(state);
     }
@@ -82,8 +81,10 @@ class FetchTransactionNewBloc
           dateFrom: newFrom ?? "",
           dateTo: newTo ?? "",
         );
-        final hideMenungguPembayaran = response.data.where((element) 
-        => element.status.toLowerCase() != "menunggu pembayaran").toList();
+        final hideMenungguPembayaran = response.data
+            .where((element) =>
+                element.status.toLowerCase() != "menunggu pembayaran")
+            .toList();
         return FetchTransactionNewState(
             status: FetchTransactionNewStatus.success,
             order: hideMenungguPembayaran,
@@ -95,16 +96,18 @@ class FetchTransactionNewBloc
             kategori: _kategoriId,
             dateFrom: newFrom ?? "",
             dateTo: newTo ?? "");
-        final hideMenungguPembayaran = response.data.where((element) 
-        => element.status.toLowerCase() != "menunggu pembayaran").toList();
+        final hideMenungguPembayaran = response.data
+            .where((element) =>
+                element.status.toLowerCase() != "menunggu pembayaran")
+            .toList();
         return FetchTransactionNewState(
             status: FetchTransactionNewStatus.success,
             order: hideMenungguPembayaran,
-            nextPage: response.links.next
-        );
+            nextPage: response.links.next);
       }
     } catch (error) {
-      return FetchTransactionNewState(status: FetchTransactionNewStatus.failure, message: error.toString());
+      return FetchTransactionNewState(
+          status: FetchTransactionNewStatus.failure, message: error.toString());
     }
   }
 
@@ -115,15 +118,17 @@ class FetchTransactionNewBloc
       if (state.nextPage == null) {
         return state.copyWith(status: FetchTransactionNewStatus.empty);
       }
-      final response = await repository.fetchTransactionsWithoutBaseurl(state.nextPage);
-      final hideMenungguPembayaran = response.data.where((element) 
-        => element.status.toLowerCase() != "menunggu pembayaran").toList();
+      final response =
+          await repository.fetchTransactionsWithoutBaseurl(state.nextPage);
+      final hideMenungguPembayaran = response.data
+          .where((element) =>
+              element.status.toLowerCase() != "menunggu pembayaran")
+          .toList();
       return FetchTransactionNewState(
           status: FetchTransactionNewStatus.success,
           order: state.order..addAll(hideMenungguPembayaran),
-          nextPage: response.links.next
-      );
-    } catch (error){
+          nextPage: response.links.next);
+    } catch (error) {
       return state.copyWith(
           status: FetchTransactionNewStatus.failure, message: error.toString());
     }

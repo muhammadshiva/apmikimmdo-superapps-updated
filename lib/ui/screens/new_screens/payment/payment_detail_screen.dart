@@ -76,7 +76,7 @@ class _PaymentDetailScreenState extends State<PaymentDetailScreen> {
     LoadingDialog.show(context);
     await Future.delayed(Duration(seconds: 1));
     await _cancelOrderCubit.cancelOrder(paymentId: paymentId);
-     AppExt.popScreen(context);
+    AppExt.popScreen(context);
   }
 
   @override
@@ -142,10 +142,9 @@ class _PaymentDetailScreenState extends State<PaymentDetailScreen> {
                       body: MultiBlocListener(
                         listeners: [
                           BlocListener(
-                            cubit: _cancelOrderCubit,
+                            bloc: _cancelOrderCubit,
                             listener: (_, state) async {
                               if (state is CancelOrderSuccess) {
-                               
                                 AppExt.popUntilRoot(context);
                                 BlocProvider.of<BottomNavCubit>(context)
                                     .navItemTapped(0);
@@ -185,7 +184,7 @@ class _PaymentDetailScreenState extends State<PaymentDetailScreen> {
                             },
                           ),
                           BlocListener(
-                            cubit: _fetchPaymentMethodCubit,
+                            bloc: _fetchPaymentMethodCubit,
                             listener: (_, state) async {
                               if (state is FetchPaymentMethodSuccess) {
                                 final int index = state.paymentMethods
@@ -214,7 +213,7 @@ class _PaymentDetailScreenState extends State<PaymentDetailScreen> {
                             },
                           ),
                           BlocListener(
-                            cubit: _changePaymentMethodCubit,
+                            bloc: _changePaymentMethodCubit,
                             listener: (_, state) async {
                               if (state is ChangePaymentMethodSuccess) {
                                 AppExt.popScreen(context);
@@ -296,7 +295,7 @@ class _PaymentDetailScreenState extends State<PaymentDetailScreen> {
                                           Text("Transfer ke nomor rekening",
                                               style: AppTypo.body1Lato),
                                           BlocBuilder(
-                                            cubit: _fetchPaymentMethodCubit,
+                                            bloc: _fetchPaymentMethodCubit,
                                             builder: (context,
                                                     statePaymentMethod) =>
                                                 statePaymentMethod

@@ -264,7 +264,7 @@ class _JoinUserAddProductScreenState extends State<JoinUserAddProductScreen> {
                       height: 8,
                     ),
                     BlocBuilder(
-                      cubit: _fetchCategoriesCubit,
+                      bloc: _fetchCategoriesCubit,
                       builder: (context, state) {
                         if (state is FetchCategoriesLoading) {
                           return Center(
@@ -295,7 +295,7 @@ class _JoinUserAddProductScreenState extends State<JoinUserAddProductScreen> {
                       },
                     ),
                     BlocBuilder(
-                      cubit: _fetchSubcategoriesCubit,
+                      bloc: _fetchSubcategoriesCubit,
                       builder: (context, state) {
                         if (state is FetchSubcategoriesLoading) {
                           return Center(

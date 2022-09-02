@@ -60,7 +60,9 @@ class _ProductDetailBodyState extends State<ProductDetailBody> {
     _addProductTokoSayaCubit = AddProductTokoSayaCubit();
     _fetchSelectedRecipentCubit = FetchSelectedRecipentCubit()
       ..fetchSelectedRecipent();
-    variantIdSelected = widget.product.productVariant.length > 0 ? widget.product.productVariant[0].id : 0;
+    variantIdSelected = widget.product.productVariant.length > 0
+        ? widget.product.productVariant[0].id
+        : 0;
     // addProductPhoto();
     super.initState();
   }
@@ -115,7 +117,7 @@ class _ProductDetailBodyState extends State<ProductDetailBody> {
       child: MultiBlocListener(
         listeners: [
           BlocListener(
-            cubit: _addProductTokoSayaCubit,
+            bloc: _addProductTokoSayaCubit,
             listener: (context, state) {
               if (state is AddProductTokoSayaLoading) {
                 LoadingDialog.show(context);
@@ -156,7 +158,7 @@ class _ProductDetailBodyState extends State<ProductDetailBody> {
             },
           ),
           BlocListener(
-            cubit: _fetchSelectedRecipentCubit,
+            bloc: _fetchSelectedRecipentCubit,
             listener: (context, state) {
               if (state is FetchSelectedRecipentSuccess) {
                 setState(() {

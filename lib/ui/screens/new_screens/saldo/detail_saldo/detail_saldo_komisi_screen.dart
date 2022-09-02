@@ -5,15 +5,15 @@ import 'package:marketplace/utils/extensions.dart' as AppExt;
 import 'package:marketplace/utils/typography.dart' as AppTypo;
 
 class DetailSaldoKomisiScreen extends StatefulWidget {
-  const DetailSaldoKomisiScreen({ Key key, this.logId }) : super(key: key);
+  const DetailSaldoKomisiScreen({Key key, this.logId}) : super(key: key);
   final int logId;
 
   @override
-  State<DetailSaldoKomisiScreen> createState() => _DetailSaldoKomisiScreenState();
+  State<DetailSaldoKomisiScreen> createState() =>
+      _DetailSaldoKomisiScreenState();
 }
 
 class _DetailSaldoKomisiScreenState extends State<DetailSaldoKomisiScreen> {
-
   FetchWalletDetailCubit _fetchWalletDetailCubit;
 
   @override
@@ -54,19 +54,18 @@ class _DetailSaldoKomisiScreenState extends State<DetailSaldoKomisiScreen> {
           ),
         ),
         body: BlocBuilder(
-          cubit: _fetchWalletDetailCubit,
-          builder: (context, state) => 
-          state is FetchWalletDetailLoading
+          bloc: _fetchWalletDetailCubit,
+          builder: (context, state) => state is FetchWalletDetailLoading
               ? Center(
-                      child: CircularProgressIndicator(),
-                    )
+                  child: CircularProgressIndicator(),
+                )
               : state is FetchWalletDetailFailure
                   ? Center(
                       child: Text("Terjadi kesalahan!"),
                     )
                   : state is FetchWalletDetailSuccess
                       ? SingleChildScrollView(
-                        child: Column(
+                          child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               SizedBox(
@@ -266,7 +265,7 @@ class _DetailSaldoKomisiScreenState extends State<DetailSaldoKomisiScreen> {
                               )
                             ],
                           ),
-                      )
+                        )
                       : SizedBox(),
         ),
       ),

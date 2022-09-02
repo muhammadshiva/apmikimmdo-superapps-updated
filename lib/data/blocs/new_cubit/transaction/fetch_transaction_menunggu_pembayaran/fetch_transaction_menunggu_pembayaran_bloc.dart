@@ -11,22 +11,24 @@ import 'package:rxdart/rxdart.dart';
 part 'fetch_transaction_menunggu_pembayaran_event.dart';
 part 'fetch_transaction_menunggu_pembayaran_state.dart';
 
-class FetchTransactionMenungguPembayaranBloc
-    extends Bloc<FetchTransactionMenungguPembayaranEvent, FetchTransactionMenungguPembayaranState> {
-  FetchTransactionMenungguPembayaranBloc() : super(FetchTransactionMenungguPembayaranInitial());
+class FetchTransactionMenungguPembayaranBloc extends Bloc<
+    FetchTransactionMenungguPembayaranEvent,
+    FetchTransactionMenungguPembayaranState> {
+  FetchTransactionMenungguPembayaranBloc()
+      : super(FetchTransactionMenungguPembayaranInitial());
 
   final TransactionRepository repository = TransactionRepository();
 
-  @override
-  Stream<Transition<FetchTransactionMenungguPembayaranEvent, FetchTransactionMenungguPembayaranState>> transformEvents(
-      Stream<FetchTransactionMenungguPembayaranEvent> events,
-      TransitionFunction<FetchTransactionMenungguPembayaranEvent, FetchTransactionMenungguPembayaranState> transitionFn,
-      ) {
-    return super.transformEvents(
-      events.throttleTime(const Duration(milliseconds: 500)),
-      transitionFn,
-    );
-  }
+  // @override
+  // Stream<Transition<FetchTransactionMenungguPembayaranEvent, FetchTransactionMenungguPembayaranState>> transformEvents(
+  //     Stream<FetchTransactionMenungguPembayaranEvent> events,
+  //     TransitionFunction<FetchTransactionMenungguPembayaranEvent, FetchTransactionMenungguPembayaranState> transitionFn,
+  //     ) {
+  //   return super.transformEvents(
+  //     events.throttleTime(const Duration(milliseconds: 500)),
+  //     transitionFn,
+  //   );
+  // }
 
   @override
   Stream<FetchTransactionMenungguPembayaranState> mapEventToState(
@@ -38,14 +40,17 @@ class FetchTransactionMenungguPembayaranBloc
     if (event is TransactionMenungguPembayaranLoadedAfterDelete) {
       final menungguPembayaran = event.order.data
           .where((element) =>
-      element.status.toLowerCase() == "menunggu pembayaran")
+              element.status.toLowerCase() == "menunggu pembayaran")
           .toList();
-      yield FetchTransactionMenungguPembayaranSuccessAfterDelete(menungguPembayaran);
+      yield FetchTransactionMenungguPembayaranSuccessAfterDelete(
+          menungguPembayaran);
     }
   }
 
-  Future<FetchTransactionMenungguPembayaranState> _mapTransactionMenungguPembayaranFetchedToState(
-      FetchTransactionMenungguPembayaranState state, TransactionMenungguPembayaranFetched event) async {
+  Future<FetchTransactionMenungguPembayaranState>
+      _mapTransactionMenungguPembayaranFetchedToState(
+          FetchTransactionMenungguPembayaranState state,
+          TransactionMenungguPembayaranFetched event) async {
     try {
       final response = await repository.fetchMenungguPembayaranTransactions();
       return FetchTransactionMenungguPembayaranSuccess(response.data);

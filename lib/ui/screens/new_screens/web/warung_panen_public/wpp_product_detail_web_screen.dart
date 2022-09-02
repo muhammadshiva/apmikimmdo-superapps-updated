@@ -200,7 +200,7 @@ class _WppProductDetailWebScreenState extends State<WppProductDetailWebScreen>
         child: MultiBlocListener(
           listeners: [
             BlocListener(
-                cubit: _productCoverageValidationCubit,
+                bloc: _productCoverageValidationCubit,
                 listener: (ctx, state) {
                   if (state is ProductCoverageValidationSuccess) {
                     if (state.status != true) {
@@ -241,7 +241,7 @@ class _WppProductDetailWebScreenState extends State<WppProductDetailWebScreen>
                   }
                 }),
             BlocListener(
-                cubit: _fetchProductDetailCubit,
+                bloc: _fetchProductDetailCubit,
                 listener: (ctx, state) {
                   if (state is FetchProductDetailFailure) {
                     WppBsSearchKecamatan.show(
@@ -272,7 +272,7 @@ class _WppProductDetailWebScreenState extends State<WppProductDetailWebScreen>
                   backgroundColor: AppColor.textPrimaryInverted,
                   body: SafeArea(
                     child: BlocBuilder(
-                      cubit: _fetchProductDetailCubit,
+                      bloc: _fetchProductDetailCubit,
                       builder: (context, state) {
                         return AppTrans.SharedAxisTransitionSwitcher(
                           fillColor: Colors.transparent,

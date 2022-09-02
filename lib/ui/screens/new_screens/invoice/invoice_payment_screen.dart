@@ -532,7 +532,7 @@ class _InvoicePaymentScreenState extends State<InvoicePaymentScreen> {
 
   Widget _buildRecipent(CheckoutTemp data, int index) {
     return BlocBuilder<FetchSelectedRecipentCubit, FetchSelectedRecipentState>(
-      cubit: _fetchSelectedRecipentCubit,
+      bloc: _fetchSelectedRecipentCubit,
       builder: (context, state) {
         if (state is FetchSelectedRecipentSuccess) {
           return Column(

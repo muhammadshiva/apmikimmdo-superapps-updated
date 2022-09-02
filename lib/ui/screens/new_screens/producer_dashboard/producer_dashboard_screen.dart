@@ -75,7 +75,7 @@ class _ProducerDashboardScreenState extends State<ProducerDashboardScreen> {
             backgroundColor: Colors.white,
             extendBody: true,
             body: BlocBuilder(
-                cubit: _fetchUserCubit,
+                bloc: _fetchUserCubit,
                 builder: (context, stateUserData) => stateUserData
                         is FetchUserLoading
                     ? Center(

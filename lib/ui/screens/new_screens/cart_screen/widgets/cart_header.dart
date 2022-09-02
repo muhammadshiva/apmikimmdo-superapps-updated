@@ -43,7 +43,7 @@ class _CartHeaderState extends State<CartHeader> {
     return MultiBlocListener(
       listeners: [
         BlocListener<DeleteCartItemCubit, DeleteCartItemState>(
-          cubit: _deleteCartItemCubit,
+          bloc: _deleteCartItemCubit,
           listener: (context, state) {
             if (state is DeleteCartItemSuccess) {
               _fetchRecipentCubit.fetchRecipents();
@@ -51,7 +51,7 @@ class _CartHeaderState extends State<CartHeader> {
           },
         ),
         BlocListener<FetchRecipentCubit, FetchRecipentState>(
-          cubit: _fetchRecipentCubit,
+          bloc: _fetchRecipentCubit,
           listener: (context, state) {
             if (state is FetchRecipentSuccess) {
               debugPrint("myrecipient ${state.recipent}");
@@ -99,7 +99,7 @@ class _CartHeaderState extends State<CartHeader> {
               ],
             ),
             BlocBuilder<DeleteCartItemCubit, DeleteCartItemState>(
-              cubit: _deleteCartItemCubit,
+              bloc: _deleteCartItemCubit,
               builder: (context, state) {
                 if (state is DeleteCartItemLoading) {
                   return CircularProgressIndicator();
@@ -123,7 +123,8 @@ class _CartHeaderState extends State<CartHeader> {
                           ..showSnackBar(SnackBar(
                             margin: EdgeInsets.zero,
                             duration: Duration(seconds: 2),
-                            content: Text('Centang pilih semua terlebih dahulu atau tekan icon hapus untuk produk yang akan dihapus'),
+                            content: Text(
+                                'Centang pilih semua terlebih dahulu atau tekan icon hapus untuk produk yang akan dihapus'),
                             backgroundColor: Colors.grey[900],
                             behavior: SnackBarBehavior.floating,
                           ));

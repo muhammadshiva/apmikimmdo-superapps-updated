@@ -58,7 +58,6 @@ class WarungPanenPublicLocation extends BeamLocation {
     WppCheckoutTempWeb checkoutTempWeb;
     WppInvoice wppInvoice;
 
-
     if (state.uri.pathSegments.contains('customeraddress')) {
       final List<dynamic> data =
           json.decode(AppExt.decryptMyData(state.queryParameters['dt']));
@@ -66,27 +65,27 @@ class WarungPanenPublicLocation extends BeamLocation {
     }
 
     if (state.uri.pathSegments.contains('checkout')) {
-      final Map<String,dynamic> data =
+      final Map<String, dynamic> data =
           json.decode(AppExt.decryptMyData(state.queryParameters['dt']));
-      alamatPelangganWithCart =  AlamatPelangganWithCart.fromJson(data);
+      alamatPelangganWithCart = AlamatPelangganWithCart.fromJson(data);
     }
 
     if (state.uri.pathSegments.contains('payment')) {
-      final Map<String,dynamic> data =
+      final Map<String, dynamic> data =
           json.decode(AppExt.decryptMyData(state.queryParameters['dt']));
-      checkoutTempWeb =  WppCheckoutTempWeb.fromJson(data);
+      checkoutTempWeb = WppCheckoutTempWeb.fromJson(data);
     }
 
     if (state.uri.pathSegments.contains('paymentdetail')) {
-      final Map<String,dynamic> data =
+      final Map<String, dynamic> data =
           json.decode(AppExt.decryptMyData(state.queryParameters['dt']));
-      wppInvoice =  WppInvoice.fromJson(data);
+      wppInvoice = WppInvoice.fromJson(data);
     }
 
     if (state.uri.pathSegments.contains('invoice')) {
-      final Map<String,dynamic> data =
+      final Map<String, dynamic> data =
           json.decode(AppExt.decryptMyData(state.queryParameters['dt']));
-      wppInvoice =  WppInvoice.fromJson(data);
+      wppInvoice = WppInvoice.fromJson(data);
     }
 
     return [
@@ -127,13 +126,15 @@ class WarungPanenPublicLocation extends BeamLocation {
             key: ValueKey('checkout'),
             child: WppCheckoutWebScreen(
               cart: alamatPelangganWithCart.newCart,
-              alamatPelangganWithCart : alamatPelangganWithCart,
+              alamatPelangganWithCart: alamatPelangganWithCart,
             )),
       if (state.uri.pathSegments.contains('payment'))
         BeamPage(
-            key: ValueKey('payment'),
-            child: WppPaymentWebScreen(checkoutTemp: checkoutTempWeb,),
-            ),
+          key: ValueKey('payment'),
+          child: WppPaymentWebScreen(
+            checkoutTemp: checkoutTempWeb,
+          ),
+        ),
       if (state.uri.pathSegments.contains('paymentdetail'))
         BeamPage(
             key: ValueKey('paymentdetail'),
@@ -418,7 +419,13 @@ class SearchLocation extends BeamLocation {
         '/search/:keyword',
       ];
 
-  List<BeamPage> pagesBuilder(BuildContext context) {
+  // List<BeamPage> pagesBuilder(BuildContext context) {
+
+  // }
+
+  @override
+  List<BeamPage> buildPages(
+      BuildContext context, RouteInformationSerializable state) {
     return [
       ...HomeLocation().pagesBuilder(context),
       if (state.pathParameters.containsKey('keyword'))
@@ -429,7 +436,12 @@ class SearchLocation extends BeamLocation {
           ),
         ),
     ];
+    throw UnimplementedError();
   }
+
+  @override
+  // TODO: implement pathPatterns
+  List<Pattern> get pathPatterns => throw UnimplementedError();
 }
 
 //============================================ TRANSACTION & CHECKOUT ============================================

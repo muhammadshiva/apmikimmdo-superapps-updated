@@ -196,13 +196,14 @@ class _SearchScreenState extends State<SearchScreen> {
                       // ),
                     ),
                     body: BlocBuilder(
-                      cubit: _searchCubit,
+                      bloc: _searchCubit,
                       builder: (context, state) =>
                           AppTrans.SharedAxisTransitionSwitcher(
                         fillColor: Colors.transparent,
                         transitionType: SharedAxisTransitionType.vertical,
                         child: state is SearchLoading
-                            ? StaggeredGridView.countBuilder(
+                            // ? StaggeredGridView.countBuilder(
+                            ? MasonryGridView.count(
                                 padding: EdgeInsets.symmetric(
                                   vertical: 13,
                                   horizontal: 15,
@@ -212,8 +213,8 @@ class _SearchScreenState extends State<SearchScreen> {
                                 itemBuilder: (BuildContext context, int index) {
                                   return ShimmerProductItem();
                                 },
-                                staggeredTileBuilder: (int index) =>
-                                    new StaggeredTile.fit(1),
+                                // staggeredTileBuilder: (int index) =>
+                                //     new StaggeredTile.fit(1),
                                 mainAxisSpacing: 13,
                                 crossAxisSpacing: 13,
                               )
@@ -255,8 +256,7 @@ class _SearchScreenState extends State<SearchScreen> {
                                               }
                                               return _refreshCompleter.future;
                                             },
-                                            child:
-                                                StaggeredGridView.countBuilder(
+                                            child: MasonryGridView.count(
                                               padding: EdgeInsets.symmetric(
                                                 vertical:
                                                     _screenWidth * (4 / 100),
@@ -279,9 +279,9 @@ class _SearchScreenState extends State<SearchScreen> {
                                                   isProductByCategory: true,
                                                 );
                                               },
-                                              staggeredTileBuilder:
-                                                  (int index) =>
-                                                      new StaggeredTile.fit(1),
+                                              // staggeredTileBuilder:
+                                              //     (int index) =>
+                                              //         new StaggeredTile.fit(1),
                                               mainAxisSpacing: 13,
                                               crossAxisSpacing: 13,
                                             ),

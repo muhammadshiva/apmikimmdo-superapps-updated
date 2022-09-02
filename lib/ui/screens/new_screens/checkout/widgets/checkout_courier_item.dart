@@ -84,7 +84,7 @@ class _CheckoutCourierItemState extends State<CheckoutCourierItem> {
     return BlocProvider(
         create: (_) => _fetchShippingOptionsCubit,
         child: BlocBuilder(
-            cubit: _fetchShippingOptionsCubit,
+            bloc: _fetchShippingOptionsCubit,
             builder: (context, fetchShippingOptionsState) {
               return Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,

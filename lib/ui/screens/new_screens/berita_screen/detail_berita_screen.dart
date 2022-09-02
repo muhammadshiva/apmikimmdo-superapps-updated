@@ -109,7 +109,7 @@ class DetailBeritaScreen extends StatelessWidget {
                               color: Color(
                                 0xFF939393,
                               ),
-                              lineHeight: 1.3,
+                              // lineHeight: 1.3,
                               textAlign: TextAlign.left,
                             )
                           },

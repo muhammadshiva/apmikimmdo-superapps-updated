@@ -51,7 +51,7 @@ class _HorizontalCategoryRecomProductListState
           ),
         ],
         child: BlocBuilder(
-            cubit: _fetchProductsCubit,
+            bloc: _fetchProductsCubit,
             builder: (context, productRecomState) {
               return productRecomState is FetchProductsLoading
                   ? ShimmerProductList()
@@ -107,7 +107,8 @@ class _HorizontalCategoryRecomProductListState
                                 SizedBox(height: 10),
                                 Container(
                                   height: 233,
-                                  child: StaggeredGridView.countBuilder(
+                                  // child: StaggeredGridView.countBuilder(
+                                  child: MasonryGridView.count(
                                     physics: BouncingScrollPhysics(),
                                     padding: EdgeInsets.only(
                                       left: !context.isPhone
@@ -130,8 +131,8 @@ class _HorizontalCategoryRecomProductListState
                                         // warungPhoneNumber: warungPhoneNumber
                                       );
                                     },
-                                    staggeredTileBuilder: (int index) =>
-                                        StaggeredTile.fit(4),
+                                    // staggeredTileBuilder: (int index) =>
+                                    //     StaggeredTile.fit(4),
                                     mainAxisSpacing: 13,
                                     crossAxisSpacing: 13,
                                   ),

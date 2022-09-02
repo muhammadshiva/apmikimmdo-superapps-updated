@@ -103,7 +103,7 @@ class _DeliverAddressItemState extends State<DeliverAddressItem> {
       child: MultiBlocListener(
         listeners: [
           BlocListener(
-            cubit: _fetchRecipentCubit,
+            bloc: _fetchRecipentCubit,
             listener: (_, state) async {
               if (state is FetchRecipentSuccess) {
                 _fetchSelectedRecipentCubit.fetchSelectedRecipent();
@@ -143,7 +143,7 @@ class _DeliverAddressItemState extends State<DeliverAddressItem> {
           ),
         ],
         child: BlocBuilder(
-            cubit: _fetchRecipentCubit,
+            bloc: _fetchRecipentCubit,
             builder: (context, fetchRecipentState) {
               return Column(
                 children: [
@@ -193,7 +193,7 @@ class _DeliverAddressItemState extends State<DeliverAddressItem> {
                           ),
                           child: fetchRecipentState.recipent.length > 0
                               ? BlocBuilder(
-                                  cubit: _fetchSelectedRecipentCubit,
+                                  bloc: _fetchSelectedRecipentCubit,
                                   builder: (context, selectedRecipentState) =>
                                       selectedRecipentState
                                               is FetchSelectedRecipentSuccess

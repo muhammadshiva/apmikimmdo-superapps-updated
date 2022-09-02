@@ -526,7 +526,7 @@ class _InvoiceWaitingPaymentScreenState
 
   Widget _buildRecipent() {
     return BlocBuilder<FetchSelectedRecipentCubit, FetchSelectedRecipentState>(
-      cubit: _fetchSelectedRecipentCubit,
+      bloc: _fetchSelectedRecipentCubit,
       builder: (context, state) {
         if (state is FetchSelectedRecipentSuccess) {
           return Column(

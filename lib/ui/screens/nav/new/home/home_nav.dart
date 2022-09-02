@@ -181,7 +181,7 @@ class _HomeNavState extends State<HomeNav> with TickerProviderStateMixin {
         child: MultiBlocListener(
           listeners: [
             BlocListener(
-                cubit: _fetchCategoriesCubit,
+                bloc: _fetchCategoriesCubit,
                 listener: (context, state) {
                   if (state is FetchCategoriesSuccess) {
                     categoryTemp.clear();
@@ -211,28 +211,28 @@ class _HomeNavState extends State<HomeNav> with TickerProviderStateMixin {
               body: !context.isPhone
                   ? HomeNavWeb()
                   : BlocBuilder(
-                      cubit: _fetchFlashSaleCubit,
+                      bloc: _fetchFlashSaleCubit,
                       builder: (context, fetchFlashSaleState) => BlocBuilder(
-                        cubit: _fetchPromoCubit,
+                        bloc: _fetchPromoCubit,
                         builder: (context, fetchPromoState) => BlocBuilder(
-                          cubit: _fetchBestSellCubit,
+                          bloc: _fetchBestSellCubit,
                           builder: (context, fetchBestSellState) => BlocBuilder(
-                            cubit: _fetchBumdesCubit,
+                            bloc: _fetchBumdesCubit,
                             builder: (context, fetchBumdesState) => BlocBuilder(
-                              cubit: _fetchHomeSliderCubit,
+                              bloc: _fetchHomeSliderCubit,
                               builder: (context, fetchSlidersState) =>
                                   BlocBuilder(
-                                cubit: _fetchProductsByCategoryCubit,
+                                bloc: _fetchProductsByCategoryCubit,
                                 builder: (context, fetchProductCategoryState) =>
                                     BlocBuilder(
-                                  cubit: _fetchSelectedRecipent,
+                                  bloc: _fetchSelectedRecipent,
                                   builder:
                                       (context, fetchSelectedRecipentState) =>
                                           BlocBuilder(
-                                    cubit: _fetchCategoriesCubit,
+                                    bloc: _fetchCategoriesCubit,
                                     builder: (context, fetchCategoriesState) =>
                                         BlocBuilder(
-                                      cubit: _fetchNewsActivityCubit,
+                                      bloc: _fetchNewsActivityCubit,
                                       builder: (context,
                                               fetchNewsActivityState) =>
                                           //======================================MAIN LAYOUT======================================
@@ -719,8 +719,8 @@ class _HomeNavState extends State<HomeNav> with TickerProviderStateMixin {
                                                                         .white,
                                                                     child: fetchProductCategoryState
                                                                             is FetchProductsByCategoryLoading
-                                                                        ? StaggeredGridView
-                                                                            .countBuilder(
+                                                                        ? MasonryGridView
+                                                                            .count(
                                                                             shrinkWrap:
                                                                                 true,
                                                                             padding:
@@ -736,8 +736,8 @@ class _HomeNavState extends State<HomeNav> with TickerProviderStateMixin {
                                                                                 (BuildContext context, int index) {
                                                                               return ShimmerProductItem();
                                                                             },
-                                                                            staggeredTileBuilder: (int index) =>
-                                                                                new StaggeredTile.fit(1),
+                                                                            // staggeredTileBuilder: (int index) =>
+                                                                            //     new StaggeredTile.fit(1),
                                                                             mainAxisSpacing:
                                                                                 13,
                                                                             crossAxisSpacing:
@@ -748,7 +748,7 @@ class _HomeNavState extends State<HomeNav> with TickerProviderStateMixin {
                                                                             ? Center(child: Text("Produk gagal dimuat"))
                                                                             : fetchProductCategoryState is FetchProductsByCategorySuccess
                                                                                 ? fetchProductCategoryState.products.length > 0
-                                                                                    ? StaggeredGridView.countBuilder(
+                                                                                    ? MasonryGridView.count(
                                                                                         physics: NeverScrollableScrollPhysics(),
                                                                                         shrinkWrap: true,
                                                                                         padding: EdgeInsets.symmetric(
@@ -766,7 +766,7 @@ class _HomeNavState extends State<HomeNav> with TickerProviderStateMixin {
                                                                                             isProductByCategory: true,
                                                                                           );
                                                                                         },
-                                                                                        staggeredTileBuilder: (int index) => new StaggeredTile.fit(1),
+                                                                                        // staggeredTileBuilder: (int index) => new StaggeredTile.fit(1),
                                                                                         mainAxisSpacing: 13,
                                                                                         crossAxisSpacing: 13,
                                                                                       )

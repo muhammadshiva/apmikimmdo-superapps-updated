@@ -161,7 +161,7 @@ class _CategoryWebState extends State<CategoryWeb> {
         child: MultiBlocListener(
             listeners: [
               BlocListener(
-                cubit: _fetchCategoriesCubit,
+                bloc: _fetchCategoriesCubit,
                 listener: (context, state) {
                   if (state is FetchCategoriesSuccess) {
                     for (var i = 0; i < state.categories.length; i++) {
@@ -191,7 +191,7 @@ class _CategoryWebState extends State<CategoryWeb> {
                         )),
                     SizedBox(height: 18),
                     BlocBuilder(
-                        cubit: _fetchCategoriesCubit,
+                        bloc: _fetchCategoriesCubit,
                         builder: (context, state) => state
                                 is FetchCategoriesLoading
                             ? categoryWebLoading(context)

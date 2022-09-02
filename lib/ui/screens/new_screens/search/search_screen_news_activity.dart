@@ -163,7 +163,7 @@ class _SearchScreenNewsActivityState extends State<SearchScreenNewsActivity> {
                       ],
                     ),
                     body: BlocBuilder(
-                      cubit: _searchCubit,
+                      bloc: _searchCubit,
                       builder: (context, state) =>
                           AppTrans.SharedAxisTransitionSwitcher(
                         fillColor: Colors.transparent,

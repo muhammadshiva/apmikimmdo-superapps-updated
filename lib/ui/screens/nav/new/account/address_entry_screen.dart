@@ -228,7 +228,7 @@ class _AddressEntryScreenState extends State<AddressEntryScreen> {
         child: MultiBlocListener(
           listeners: [
             BlocListener(
-                cubit: _addRecipentCubit,
+                bloc: _addRecipentCubit,
                 listener: (context, state) {
                   if (state is AddRecipentSuccess) {
                     if (widget.isFromBsDeliveryAddress) {
@@ -273,7 +273,7 @@ class _AddressEntryScreenState extends State<AddressEntryScreen> {
                   }
                 }),
             BlocListener(
-                cubit: _editRecipentCubit,
+                bloc: _editRecipentCubit,
                 listener: (context, state) {
                   if (state is EditRecipentSuccess) {
                     AppExt.popScreen(context, true);

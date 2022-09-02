@@ -28,7 +28,8 @@ class _TransaksiStatusPesananScreenState
 
   @override
   void initState() {
-    _fetchTransactionTrackingCubit = FetchTransactionTrackingCubit()..getTrackingOrder(orderId: widget.orderId);
+    _fetchTransactionTrackingCubit = FetchTransactionTrackingCubit()
+      ..getTrackingOrder(orderId: widget.orderId);
     super.initState();
   }
 
@@ -56,92 +57,121 @@ class _TransaksiStatusPesananScreenState
           brightness: Brightness.light,
         ),
         body: BlocBuilder(
-          cubit: _fetchTransactionTrackingCubit,
+          bloc: _fetchTransactionTrackingCubit,
           builder: (context, state) => AppTrans.SharedAxisTransitionSwitcher(
-            transitionType: SharedAxisTransitionType.vertical,
-            fillColor: Colors.transparent,
-            child: state is FetchTransactionTrackingLoading
-                ? Center(
-                    child: CircularProgressIndicator(
-                        valueColor: new AlwaysStoppedAnimation<Color>(
-                            AppColor.primary)),
-                  )
-                : state is FetchTransactionTrackingFailure
-                    ? Center(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Icon(
-                              FlutterIcons.error_outline_mdi,
-                              size: 45,
-                              color: AppColor.primaryDark,
-                            ),
-                            SizedBox(
-                              height: 10,
-                            ),
-                            SizedBox(
-                              width: 250,
-                              child: Text(
-                                "Status pesanan gagal dimuat",
-                                style: AppTypo.overlineAccent,
-                                textAlign: TextAlign.center,
+              transitionType: SharedAxisTransitionType.vertical,
+              fillColor: Colors.transparent,
+              child: state is FetchTransactionTrackingLoading
+                  ? Center(
+                      child: CircularProgressIndicator(
+                          valueColor: new AlwaysStoppedAnimation<Color>(
+                              AppColor.primary)),
+                    )
+                  : state is FetchTransactionTrackingFailure
+                      ? Center(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(
+                                FlutterIcons.error_outline_mdi,
+                                size: 45,
+                                color: AppColor.primaryDark,
                               ),
-                            ),
-                            SizedBox(
-                              height: 7,
-                            ),
-                            OutlineButton(
-                              child: Text("Coba lagi"),
-                              onPressed: () {},
-                              textColor: AppColor.primaryDark,
-                              color: AppColor.danger,
-                            ),
-                          ],
-                        ),
-                      )
-                    : state is FetchTransactionTrackingSuccess
-                        ?  Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Divider(thickness: 10,color: AppColor.silverFlashSale,),
-                            Padding(
-                              padding:  EdgeInsets.symmetric(horizontal: _screenWidth * (5/100),vertical: 14),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text("No. Resi",style: AppTypo.body2Lato,),
-                                  Row(
-                                    children: [
-                                      Text(state.data.airwaybill ?? '-',style: AppTypo.body2Lato.copyWith(fontWeight: FontWeight.bold)),
-                                      SizedBox(width: 10,),
-                                      Text("SALIN",style: AppTypo.body2Lato.copyWith(fontWeight: FontWeight.bold,color: AppColor.primary))
-                                    ],
-                                  )
-                                ],
+                              SizedBox(
+                                height: 10,
                               ),
-                            ),
-                            Divider(thickness: 10,color: AppColor.silverFlashSale,),
-                            Padding(
-                              padding:  EdgeInsets.symmetric(horizontal: _screenWidth * (5/100),vertical: 14),
-                              child: Text("Status Pemesanan",style: AppTypo.body1Lato,),
-                            ),
-                            Divider(thickness: 1,),
-                            ListView.separated(
-                              shrinkWrap: true,
-                              separatorBuilder: (context,index)=>SizedBox(), 
-                              physics: NeverScrollableScrollPhysics(),
-                              padding: EdgeInsets.only(top: 16),
-                              itemCount: state.data.logs.length,
-                              itemBuilder: (context,index){
-                                TrackingOrderLogs data = state.data.logs[index];
-                                return ListOrderTrackingItem(trackingOrderLogs: data,isStatused: index == 0,);
-                              }, 
-                            )
-                            
-                          ],
+                              SizedBox(
+                                width: 250,
+                                child: Text(
+                                  "Status pesanan gagal dimuat",
+                                  style: AppTypo.overlineAccent,
+                                  textAlign: TextAlign.center,
+                                ),
+                              ),
+                              SizedBox(
+                                height: 7,
+                              ),
+                              OutlineButton(
+                                child: Text("Coba lagi"),
+                                onPressed: () {},
+                                textColor: AppColor.primaryDark,
+                                color: AppColor.danger,
+                              ),
+                            ],
+                          ),
                         )
-                        : SizedBox.shrink()
-          ),
+                      : state is FetchTransactionTrackingSuccess
+                          ? Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Divider(
+                                  thickness: 10,
+                                  color: AppColor.silverFlashSale,
+                                ),
+                                Padding(
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: _screenWidth * (5 / 100),
+                                      vertical: 14),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(
+                                        "No. Resi",
+                                        style: AppTypo.body2Lato,
+                                      ),
+                                      Row(
+                                        children: [
+                                          Text(state.data.airwaybill ?? '-',
+                                              style: AppTypo.body2Lato.copyWith(
+                                                  fontWeight: FontWeight.bold)),
+                                          SizedBox(
+                                            width: 10,
+                                          ),
+                                          Text("SALIN",
+                                              style: AppTypo.body2Lato.copyWith(
+                                                  fontWeight: FontWeight.bold,
+                                                  color: AppColor.primary))
+                                        ],
+                                      )
+                                    ],
+                                  ),
+                                ),
+                                Divider(
+                                  thickness: 10,
+                                  color: AppColor.silverFlashSale,
+                                ),
+                                Padding(
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: _screenWidth * (5 / 100),
+                                      vertical: 14),
+                                  child: Text(
+                                    "Status Pemesanan",
+                                    style: AppTypo.body1Lato,
+                                  ),
+                                ),
+                                Divider(
+                                  thickness: 1,
+                                ),
+                                ListView.separated(
+                                  shrinkWrap: true,
+                                  separatorBuilder: (context, index) =>
+                                      SizedBox(),
+                                  physics: NeverScrollableScrollPhysics(),
+                                  padding: EdgeInsets.only(top: 16),
+                                  itemCount: state.data.logs.length,
+                                  itemBuilder: (context, index) {
+                                    TrackingOrderLogs data =
+                                        state.data.logs[index];
+                                    return ListOrderTrackingItem(
+                                      trackingOrderLogs: data,
+                                      isStatused: index == 0,
+                                    );
+                                  },
+                                )
+                              ],
+                            )
+                          : SizedBox.shrink()),
         ),
       ),
     );

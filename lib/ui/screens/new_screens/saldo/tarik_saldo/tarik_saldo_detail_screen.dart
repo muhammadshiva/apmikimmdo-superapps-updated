@@ -42,19 +42,18 @@ class _TarikSaldoDetailScreenState extends State<TarikSaldoDetailScreen> {
     return BlocProvider(
       create: (_) => _withdrawWalletCubit,
       child: BlocListener(
-        cubit: _withdrawWalletCubit,
+        bloc: _withdrawWalletCubit,
         listener: (context, state) {
           if (state is WithdrawWalletSuccess) {
             AppExt.pushScreen(
                 context,
                 TarikSaldoVerifikasiScreen(
                   walletWithdrawData: WalletWithdrawData(
-                    saldo: walletWithdrawData.saldo,
-                    noRek: walletWithdrawData.noRek,
-                    paymentMethod: walletWithdrawData.paymentMethod,
-                    atasNama: walletWithdrawData.atasNama,
-                    logId: state.data.logId
-                  ),
+                      saldo: walletWithdrawData.saldo,
+                      noRek: walletWithdrawData.noRek,
+                      paymentMethod: walletWithdrawData.paymentMethod,
+                      atasNama: walletWithdrawData.atasNama,
+                      logId: state.data.logId),
                 ));
           }
         },

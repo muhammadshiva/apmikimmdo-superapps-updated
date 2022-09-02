@@ -272,7 +272,7 @@ class _CartScreenState extends State<CartScreen> {
                           },
                         ),
                         BlocListener<FetchRecipentCubit, FetchRecipentState>(
-                          cubit: _fetchRecipentCubit,
+                          bloc: _fetchRecipentCubit,
                           listener: (context, state) {
                             if (state is FetchRecipentSuccess) {
                               debugPrint("myrecipient ${state.recipent}");
@@ -298,7 +298,7 @@ class _CartScreenState extends State<CartScreen> {
                           },
                         ),
                         BlocListener(
-                          cubit: _updateQuantityCubit,
+                          bloc: _updateQuantityCubit,
                           listener: (context, state) async {
                             if (state is UpdateQuantitySuccess) {
                               if (_goBack) {
@@ -329,7 +329,7 @@ class _CartScreenState extends State<CartScreen> {
                           },
                         ),
                         BlocListener(
-                          cubit: _cartStockValidationCubit,
+                          bloc: _cartStockValidationCubit,
                           listener: (context, state) async {
                             if (state is CartStockValidationSuccess) {
                               if (kIsWeb &&

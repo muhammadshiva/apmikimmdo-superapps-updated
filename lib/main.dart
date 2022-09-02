@@ -150,9 +150,9 @@ class _MyAppState extends State<MyApp> {
     initialized = false;
 
     if (!kIsWeb) {
-      OneSignal.shared.setNotificationReceivedHandler(
-        (OSNotification notification) {},
-      );
+      // OneSignal.shared.setNotificationOpenedHandler(
+      //   (OSNotification notification) {},
+      // );
 
       OneSignal.shared.setNotificationOpenedHandler(
         (OSNotificationOpenedResult result) {},
@@ -228,19 +228,19 @@ class _MyAppState extends State<MyApp> {
       ],
       child: kIsWeb
           ? GetMaterialApp.router(
-              routeInformationParser: BeamerRouteInformationParser(),
-              routerDelegate: RootRouterDelegate(
+              routeInformationParser: BeamerParser(),
+              routerDelegate: BeamerDelegate(
                 guards: [
-                  BeamGuard(
-                    pathBlueprints: ['wpp/payment/*'],
-                    check: (context, location) => false,
-                    beamToNamed: '/',
-                  ),
-                  BeamGuard(
-                    pathBlueprints: ['wpp/paymentdetail/*'],
-                    check: (context, location) => false,
-                    beamToNamed: '/',
-                  ),
+                  // BeamGuard(
+                  //   pathBlueprints: ['wpp/payment/*'],
+                  //   check: (context, location) => false,
+                  //   beamToNamed: '/',
+                  // ),
+                  // BeamGuard(
+                  //   pathBlueprints: ['wpp/paymentdetail/*'],
+                  //   check: (context, location) => false,
+                  //   beamToNamed: '/',
+                  // ),
                   //=============================================================
                   //Untuk sekarang BeamGuard Payment digunakan untuk Web mode Mobile
                   // BeamGuard(

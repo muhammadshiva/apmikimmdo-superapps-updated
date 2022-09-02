@@ -117,13 +117,14 @@ class _ViewAllProductScreenState extends State<ViewAllProductScreen> {
               child: Scaffold(
                   appBar: _buildAppBar(context, _screenWidth),
                   body: BlocBuilder(
-                    cubit: _fetchProductsCubit,
+                    bloc: _fetchProductsCubit,
                     builder: (context, state) =>
                         AppTrans.SharedAxisTransitionSwitcher(
                             fillColor: Colors.transparent,
                             transitionType: SharedAxisTransitionType.vertical,
                             child: state is FetchProductsLoading
-                                ? StaggeredGridView.countBuilder(
+                                // ? StaggeredGridView.countBuilder(
+                                ? MasonryGridView.count(
                                     padding: EdgeInsets.symmetric(
                                       vertical: 15,
                                       horizontal: 15,
@@ -136,8 +137,8 @@ class _ViewAllProductScreenState extends State<ViewAllProductScreen> {
                                           isPromo: widget.productsType ==
                                               FetchProductsType.promo);
                                     },
-                                    staggeredTileBuilder: (int index) =>
-                                        new StaggeredTile.fit(1),
+                                    // staggeredTileBuilder: (int index) =>
+                                    //     new StaggeredTile.fit(1),
                                     mainAxisSpacing: 13,
                                     crossAxisSpacing: 13,
                                   )
@@ -183,8 +184,9 @@ class _ViewAllProductScreenState extends State<ViewAllProductScreen> {
                                                                 .category.id)
                                                     : _fetchProductsCubit
                                                         .fetchProductsSpecialOffer(),
-                                                child: StaggeredGridView
-                                                    .countBuilder(
+                                                // child: StaggeredGridView
+                                                //     .countBuilder(
+                                                child: MasonryGridView.count(
                                                   padding: EdgeInsets.symmetric(
                                                     vertical: 15,
                                                     horizontal: 15,
@@ -207,9 +209,9 @@ class _ViewAllProductScreenState extends State<ViewAllProductScreen> {
                                                       isProductByCategory: true,
                                                     );
                                                   },
-                                                  staggeredTileBuilder: (int
-                                                          index) =>
-                                                      new StaggeredTile.fit(1),
+                                                  // staggeredTileBuilder: (int
+                                                  //         index) =>
+                                                  //     new StaggeredTile.fit(1),
                                                   mainAxisSpacing: 13,
                                                   crossAxisSpacing: 13,
                                                 ),

@@ -100,7 +100,7 @@ class _HistorySaldoScreenState extends State<HistorySaldoScreen> {
         ),
         body: SafeArea(
           child: BlocBuilder(
-            cubit: _fetchWalletCubit,
+            bloc: _fetchWalletCubit,
             builder: (context, state) => Padding(
               padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
               child: state is FetchWalletLoading

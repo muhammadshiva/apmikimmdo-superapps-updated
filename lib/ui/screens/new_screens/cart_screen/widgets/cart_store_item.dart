@@ -73,7 +73,7 @@ class _CartStoreItemState extends State<CartStoreItem> {
     return MultiBlocListener(
       listeners: [
         BlocListener<DeleteCartItemCubit, DeleteCartItemState>(
-          cubit: _deleteCartItemCubit,
+          bloc: _deleteCartItemCubit,
           listener: (context, state) {
             if (state is DeleteCartItemSuccess) {
               _fetchRecipentCubit.fetchRecipents();
@@ -81,7 +81,7 @@ class _CartStoreItemState extends State<CartStoreItem> {
           },
         ),
         BlocListener<FetchRecipentCubit, FetchRecipentState>(
-          cubit: _fetchRecipentCubit,
+          bloc: _fetchRecipentCubit,
           listener: (context, state) {
             if (state is FetchRecipentSuccess) {
               debugPrint("myrecipient ${state.recipent}");
@@ -157,7 +157,7 @@ class _CartStoreItemState extends State<CartStoreItem> {
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               BlocBuilder<DeleteCartItemCubit, DeleteCartItemState>(
-                cubit: _deleteCartItemCubit,
+                bloc: _deleteCartItemCubit,
                 builder: (context, state) {
                   if (state is DeleteCartItemLoading) {
                     return CircularProgressIndicator();

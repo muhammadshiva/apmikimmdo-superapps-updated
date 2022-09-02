@@ -116,7 +116,7 @@ class _BsKategoriItemState extends State<BsKategoriItem> {
       child: SizedBox(
           height: MediaQuery.of(context).size.height - 300,
           child: BlocBuilder(
-            cubit: _fetchCategoriesCubit,
+            bloc: _fetchCategoriesCubit,
             builder: (context, state) {
               return state is FetchCategoriesLoading
                   ? Center(child: CircularProgressIndicator())

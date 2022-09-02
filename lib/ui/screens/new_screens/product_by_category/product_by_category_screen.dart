@@ -97,7 +97,7 @@ class _ProductByCategoryScreenState extends State<ProductByCategoryScreen> {
           child: MultiBlocListener(
             listeners: [
               BlocListener(
-                  cubit: _fetchCategoriesCubit,
+                  bloc: _fetchCategoriesCubit,
                   listener: (context, state) {
                     if (state is FetchCategoriesSuccess) {
                       for (int i = 0; i < state.categories.length + 1; i++) {
@@ -126,13 +126,13 @@ class _ProductByCategoryScreenState extends State<ProductByCategoryScreen> {
                   appBar: _buildAppBar(
                       context, _screenWidth, _fetchCategoriesCubit),
                   body: BlocBuilder(
-                    cubit: _fetchProductsByCategoryCubit,
+                    bloc: _fetchProductsByCategoryCubit,
                     builder: (context, state) =>
                         AppTrans.SharedAxisTransitionSwitcher(
                       fillColor: Colors.transparent,
                       transitionType: SharedAxisTransitionType.vertical,
                       child: state is FetchProductsByCategoryLoading
-                          ? StaggeredGridView.countBuilder(
+                          ? MasonryGridView.count(
                               padding: EdgeInsets.symmetric(
                                 vertical: 15,
                                 horizontal: 15,
@@ -142,8 +142,8 @@ class _ProductByCategoryScreenState extends State<ProductByCategoryScreen> {
                               itemBuilder: (BuildContext context, int index) {
                                 return ShimmerProductItem();
                               },
-                              staggeredTileBuilder: (int index) =>
-                                  new StaggeredTile.fit(1),
+                              // staggeredTileBuilder: (int index) =>
+                              //     new StaggeredTile.fit(1),
                               mainAxisSpacing: 13,
                               crossAxisSpacing: 13,
                             )
@@ -177,8 +177,7 @@ class _ProductByCategoryScreenState extends State<ProductByCategoryScreen> {
                                                   .fetchProductsByCategory(
                                                       categoryId:
                                                           widget.categoryId),
-                                          child: new StaggeredGridView
-                                              .countBuilder(
+                                          child: new MasonryGridView.count(
                                             padding: EdgeInsets.symmetric(
                                               vertical: 15,
                                               horizontal: 15,
@@ -189,10 +188,17 @@ class _ProductByCategoryScreenState extends State<ProductByCategoryScreen> {
                                                 int index) {
                                               Products _item =
                                                   state.products[index];
-                                              return GridTwoProductListItem(product: _item,isKomisi: _item.komisi != null && _item.komisi > 0, isDiscount:_item.disc > 0,isProductByCategory: true,);
+                                              return GridTwoProductListItem(
+                                                product: _item,
+                                                isKomisi:
+                                                    _item.komisi != null &&
+                                                        _item.komisi > 0,
+                                                isDiscount: _item.disc > 0,
+                                                isProductByCategory: true,
+                                              );
                                             },
-                                            staggeredTileBuilder: (int index) =>
-                                                new StaggeredTile.fit(1),
+                                            // staggeredTileBuilder: (int index) =>
+                                            //     new StaggeredTile.fit(1),
                                             mainAxisSpacing: 13,
                                             crossAxisSpacing: 13,
                                           ),
@@ -328,7 +334,7 @@ class _ProductByCategoryScreenState extends State<ProductByCategoryScreen> {
         child: Column(
           children: [
             BlocBuilder(
-                cubit: _fetchCategoriesCubit,
+                bloc: _fetchCategoriesCubit,
                 builder: (context, fetchCategoriesState) {
                   return fetchCategoriesState is FetchCategoriesLoading
                       ? Container(

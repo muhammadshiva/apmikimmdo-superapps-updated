@@ -48,7 +48,7 @@ class _CategoryRecomProductListWebState
         ),
       ],
       child: BlocBuilder(
-          cubit: _fetchProductsCubit,
+          bloc: _fetchProductsCubit,
           builder: (context, stateproducts) {
             return stateproducts is FetchProductsLoading
                 ? ShimmerProductList()

@@ -68,7 +68,7 @@ class _MainScreenState extends State<MainScreen> {
       body: MultiBlocListener(
         listeners: [
           BlocListener(
-            cubit: BlocProvider.of<UserDataCubit>(context),
+            bloc: BlocProvider.of<UserDataCubit>(context),
             listener: (context, state) {
               if (state is UserDataFailure) {
                 ScaffoldMessenger.of(context)
@@ -87,7 +87,7 @@ class _MainScreenState extends State<MainScreen> {
             },
           ),
           BlocListener(
-            cubit: _fetchSelectedRecipentCubit,
+            bloc: _fetchSelectedRecipentCubit,
             listener: (context, state) {
               if (state is FetchSelectedRecipentSuccess) {
                 setState(() {
@@ -114,12 +114,12 @@ class _MainScreenState extends State<MainScreen> {
             //   ),
             // ),
             BlocBuilder(
-          cubit: _bottomNavCubit,
+          bloc: _bottomNavCubit,
           builder: (context, state) => AppTrans.SharedAxisTransitionSwitcher(
             transitionType: SharedAxisTransitionType.vertical,
             fillColor: AppColor.navScaffoldBg,
             child: state is BottomNavHomeLoaded
-                ? 
+                ?
                 // _recipentRepo.getRecipents() == null
                 //     ? HandlingRecipentOverlay(
                 //         onTap: () => Navigator.pushReplacement(
@@ -129,8 +129,8 @@ class _MainScreenState extends State<MainScreen> {
                 //                       bottomNavCubit: _bottomNavCubit,
                 //                     ))),
                 //       )
-                //     : 
-                    HomeNav(bottomNavCubit: _bottomNavCubit)
+                //     :
+                HomeNav(bottomNavCubit: _bottomNavCubit)
                 : state is BottomNavMyShopLoaded
                     ? BlocProvider.of<UserDataCubit>(context).state.user != null
                         // ? TransactionNav()
@@ -156,7 +156,7 @@ class _MainScreenState extends State<MainScreen> {
       bottomNavigationBar: !context.isPhone
           ? null
           : BlocBuilder<BottomNavCubit, BottomNavState>(
-              cubit: _bottomNavCubit,
+              bloc: _bottomNavCubit,
               builder: (context, state) => Theme(
                 data: ThemeData(
                   splashFactory: InkRipple.splashFactory,

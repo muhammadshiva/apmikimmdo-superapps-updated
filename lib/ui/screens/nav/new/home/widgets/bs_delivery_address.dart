@@ -89,7 +89,7 @@ class _BsDeliveryAddressItemState extends State<BsDeliveryAddressItem> {
           ),
         ],
         child: BlocListener(
-          cubit: _fetchSelectedRecipentCubit,
+          bloc: _fetchSelectedRecipentCubit,
           listener: (context, state) {
             if (state is FetchSelectedRecipentSuccess) {
               setState(() {
@@ -137,7 +137,7 @@ class _BsDeliveryAddressItemState extends State<BsDeliveryAddressItem> {
                 ),
                 BlocProvider.of<UserDataCubit>(context).state.user != null
                     ? BlocBuilder(
-                        cubit: _fetchRecipentCubit,
+                        bloc: _fetchRecipentCubit,
                         builder: (context, state) => state
                                 is FetchRecipentLoading
                             ? Center(

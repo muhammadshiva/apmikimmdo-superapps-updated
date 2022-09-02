@@ -103,8 +103,7 @@ class _BSFilterProductItemState extends State<BSFilterProductItem> {
 
   bool disableButton() {
     //harus false
-    final filter =
-        BlocProvider.of<FilterProductsCubit>(context).state;
+    final filter = BlocProvider.of<FilterProductsCubit>(context).state;
     final cityIdNull = filter.cityId == null;
     final sortIdNull = filter.sortId == null;
 
@@ -183,7 +182,8 @@ class _BSFilterProductItemState extends State<BSFilterProductItem> {
                           return FilterSortBy(
                             sortDataTitle: listSort[index],
                             sortDataIndex: index,
-                            isSelected: index.toString() == state.sortId.toString(),
+                            isSelected:
+                                index.toString() == state.sortId.toString(),
                             onTap: (data) {
                               context
                                   .read<FilterProductsCubit>()
@@ -283,15 +283,12 @@ class _BSFilterProductItemState extends State<BSFilterProductItem> {
                 textColor: AppColor.textPrimaryInverted,
                 isUpperCase: false,
                 onPressed: () {
-                  final filter = BlocProvider.of<FilterProductsCubit>(context)
-                      .state;
+                  final filter =
+                      BlocProvider.of<FilterProductsCubit>(context).state;
                   final cityId = filter.cityId;
                   final sortId = filter.sortId;
-                  widget.onFilter(
-                      sortId.toString(),
-                      lowestPriceCtrl.text ?? '',
-                      highestPriceCtrl.text ?? '',
-                      cityId.toString());
+                  widget.onFilter(sortId.toString(), lowestPriceCtrl.text ?? '',
+                      highestPriceCtrl.text ?? '', cityId.toString());
                   AppExt.popScreen(context);
                 }),
             SizedBox(
@@ -416,7 +413,7 @@ class _FilterLocationState extends State<FilterLocation> {
         children: [
           //Province
           BlocBuilder(
-            cubit: _fetchProvinceCubit,
+            bloc: _fetchProvinceCubit,
             builder: (context, state) {
               return state is FetchRegionsLoading
                   ? Center(
@@ -581,7 +578,7 @@ class _FilterLocationState extends State<FilterLocation> {
           ),
           //Cities
           BlocBuilder(
-            cubit: _fetchCitiesCubit,
+            bloc: _fetchCitiesCubit,
             builder: (context, state) {
               return state is FetchRegionsLoading
                   ? Center(

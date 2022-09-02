@@ -51,14 +51,14 @@ class _UpdateAddressScreenState extends State<UpdateAddressScreen> {
 
   TextEditingController _searchController;
 
-
   @override
   void initState() {
     _isRecipentSelected = false;
     _deleteRecipentCubit = DeleteRecipentCubit();
     _editRecipentCubit = EditRecipentCubit();
     _fetchRecipentCubit = FetchRecipentCubit()..fetchRecipents();
-    _fetchSelectedRecipentCubit = FetchSelectedRecipentCubit()..fetchSelectedRecipent();
+    _fetchSelectedRecipentCubit = FetchSelectedRecipentCubit()
+      ..fetchSelectedRecipent();
     super.initState();
   }
 
@@ -86,7 +86,7 @@ class _UpdateAddressScreenState extends State<UpdateAddressScreen> {
         title: "Apakah anda yakin akan menghapus alamat?");
   }
 
-   @override
+  @override
   void dispose() {
     _fetchRecipentCubit.close();
     _deleteRecipentCubit.close();
@@ -132,7 +132,7 @@ class _UpdateAddressScreenState extends State<UpdateAddressScreen> {
               body: MultiBlocListener(
                 listeners: [
                   BlocListener(
-                    cubit: _deleteRecipentCubit,
+                    bloc: _deleteRecipentCubit,
                     listener: (context, state) {
                       if (state is DeleteRecipentFailure) {
                         AppExt.popScreen(context);
@@ -157,7 +157,7 @@ class _UpdateAddressScreenState extends State<UpdateAddressScreen> {
                     },
                   ),
                   BlocListener(
-                    cubit: _editRecipentCubit,
+                    bloc: _editRecipentCubit,
                     listener: (context, state) {
                       if (state is EditRecipentSuccess) {
                         if (widget.isFromCheckout) {
@@ -186,27 +186,27 @@ class _UpdateAddressScreenState extends State<UpdateAddressScreen> {
                     },
                   ),
                   BlocListener(
-                    cubit: _fetchSelectedRecipentCubit,
+                    bloc: _fetchSelectedRecipentCubit,
                     listener: (context, state) {
                       if (state is FetchSelectedRecipentSuccess) {
-                       setState(() {
-                        recipentMainAddress = state.recipent;
-                       });
+                        setState(() {
+                          recipentMainAddress = state.recipent;
+                        });
                       }
                       if (state is FetchSelectedRecipentFailure) {
                         ScaffoldMessenger.of(context)
-                            ..hideCurrentSnackBar()
-                            ..showSnackBar(
-                              SnackBar(
-                                margin: EdgeInsets.zero,
-                                duration: Duration(seconds: 2),
-                                backgroundColor: Colors.red,
-                                content: Text(
-                                  "Terjadi Kesalahan",
-                                ),
-                                behavior: SnackBarBehavior.floating,
+                          ..hideCurrentSnackBar()
+                          ..showSnackBar(
+                            SnackBar(
+                              margin: EdgeInsets.zero,
+                              duration: Duration(seconds: 2),
+                              backgroundColor: Colors.red,
+                              content: Text(
+                                "Terjadi Kesalahan",
                               ),
-                            );
+                              behavior: SnackBarBehavior.floating,
+                            ),
+                          );
                       }
                     },
                   ),
@@ -276,7 +276,7 @@ class _UpdateAddressScreenState extends State<UpdateAddressScreen> {
                                   height: 15,
                                 ),
                                 BlocBuilder(
-                                  cubit: _fetchRecipentCubit,
+                                  bloc: _fetchRecipentCubit,
                                   builder: (context, state) =>
                                       AppTrans.SharedAxisTransitionSwitcher(
                                     transitionType:
@@ -349,7 +349,8 @@ class _UpdateAddressScreenState extends State<UpdateAddressScreen> {
                                                     ? UpdateAccountListRecipentItem(
                                                         recipent:
                                                             state.recipent,
-                                                        recipentMainAddress: recipentMainAddress,
+                                                        recipentMainAddress:
+                                                            recipentMainAddress,
                                                         onSelected: (value,
                                                             recipentId) {
                                                           setState(() {
@@ -366,7 +367,8 @@ class _UpdateAddressScreenState extends State<UpdateAddressScreen> {
                                                         triggerRefresh: () {
                                                           _fetchRecipentCubit
                                                               .fetchRecipents();
-                                                              _fetchSelectedRecipentCubit.fetchSelectedRecipent();
+                                                          _fetchSelectedRecipentCubit
+                                                              .fetchSelectedRecipent();
                                                         })
                                                     : Center(
                                                         child: Column(

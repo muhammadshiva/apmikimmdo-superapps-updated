@@ -10,10 +10,12 @@ class DetailSaldoPenjualanScreen extends StatefulWidget {
   final int logId;
 
   @override
-  _DetailSaldoPenjualanScreenState createState() => _DetailSaldoPenjualanScreenState();
+  _DetailSaldoPenjualanScreenState createState() =>
+      _DetailSaldoPenjualanScreenState();
 }
 
-class _DetailSaldoPenjualanScreenState extends State<DetailSaldoPenjualanScreen> {
+class _DetailSaldoPenjualanScreenState
+    extends State<DetailSaldoPenjualanScreen> {
   FetchWalletDetailCubit _fetchWalletDetailCubit;
 
   @override
@@ -54,7 +56,7 @@ class _DetailSaldoPenjualanScreenState extends State<DetailSaldoPenjualanScreen>
           ),
         ),
         body: BlocBuilder(
-          cubit: _fetchWalletDetailCubit,
+          bloc: _fetchWalletDetailCubit,
           builder: (context, state) => SingleChildScrollView(
             padding: EdgeInsets.symmetric(horizontal: 16),
             child: state is FetchWalletDetailLoading

@@ -53,7 +53,7 @@ class _CartBodyState extends State<CartBody> {
   @override
   Widget build(BuildContext context) {
     return BlocListener<DeleteCartItemCubit, DeleteCartItemState>(
-      cubit: _deleteCartItemCubit,
+      bloc: _deleteCartItemCubit,
       listener: (context, state) {
         if (state is DeleteCartItemSuccess) {
           context.read<FetchCartCubit>().fetchCart();
@@ -79,14 +79,13 @@ class _CartBodyState extends State<CartBody> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                       
                         Text(
                           "Tidak dapat diproses", // ($totalUncoveredItems)
                           style: AppTypo.caption
                               .copyWith(fontWeight: FontWeight.bold),
                         ),
                         BlocBuilder<DeleteCartItemCubit, DeleteCartItemState>(
-                          cubit: _deleteCartItemCubit,
+                          bloc: _deleteCartItemCubit,
                           builder: (context, state) {
                             if (state is DeleteCartItemLoading) {
                               return CircularProgressIndicator();
