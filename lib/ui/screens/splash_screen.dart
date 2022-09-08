@@ -45,12 +45,12 @@ class _SplashScreenState extends State<SplashScreen> {
         backgroundColor: AppColor.transparent,
         body: Center(
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Column(
                 children: [
                   SizedBox(
-                    height: !context.isPhone ? 20 : 50,
+                    height: !context.isPhone ? 30 : 50,
                   ),
                   Image.asset(
                     imagePath,
@@ -58,6 +58,7 @@ class _SplashScreenState extends State<SplashScreen> {
                   ),
                 ],
               ),
+              SizedBox(height: 50),
               Column(
                 children: [
                   SizedBox(
