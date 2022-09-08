@@ -276,37 +276,37 @@ class _MyAppState extends State<MyApp> {
                   //   beamToNamed: '/',
                   // ),
                 ],
-                homeBuilder: (context, uri) => Scaffold(
-                  key: scaffoldMainKey,
-                  body: Beamer(
-                    key: _beamerKey,
-                    beamLocations: [
-                      HomeLocation(),
-                      WarungPanenPublicLocation(),
+                // homeBuilder: (context, uri) => Scaffold(
+                //   key: scaffoldMainKey,
+                //   body: Beamer(
+                //     key: _beamerKey,
+                //     beamLocations: [
+                //       HomeLocation(),
+                //       WarungPanenPublicLocation(),
 
-                      // ProductDetailLocation(),
-                      // AddressLocation(),
-                      // CheckoutLocation(),
-                      // PaymentLocation(),
-                      // ============================
-                      // ============================
-                      // ============================
-                      // AuthenticationLocation(),
-                      // ProductLocation(),
-                      // CartLocation(),
-                      // SearchLocation(),
-                      // // TransactionLocation(),
-                      // CheckoutSuccessLocation(),
-                      // AccountLocation(),
-                      // WpHomeLocation(),
-                      // WpHostLocation(),
-                      // WpCartLocation(),
-                      // WpShippingLocation(),
-                      // InvoiceLocation(),
-                    ],
-                  ),
-                ),
+                // ProductDetailLocation(),
+                // AddressLocation(),
+                // CheckoutLocation(),
+                // PaymentLocation(),
+                // ============================
+                // ============================
+                // ============================
+                // AuthenticationLocation(),
+                // ProductLocation(),
+                // CartLocation(),
+                // SearchLocation(),
+                // // TransactionLocation(),
+                // CheckoutSuccessLocation(),
+                // AccountLocation(),
+                // WpHomeLocation(),
+                // WpHostLocation(),
+                // WpCartLocation(),
+                // WpShippingLocation(),
+                // InvoiceLocation(),
+                // ],
               ),
+              //   ),
+              // ),
               title: config.appName,
               debugShowCheckedModeBanner: false,
               theme: ThemeData(
