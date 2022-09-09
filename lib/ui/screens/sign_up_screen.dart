@@ -196,13 +196,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                 ..onTap = () => kIsWeb
                                     ? _launchUrl(
                                         "https://admasolusi.com/privacy")
-                                    : Container(),
-                              // AppExt.pushScreen(
-                              //     context,
-                              //     WebviewAdmaPrivacyScreen(
-                              //         link:
-                              //             "https://admasolusi.com/privacy")
-                              //             ),
+                                    : AppExt.pushScreen(
+                                        context,
+                                        WebviewAdmaPrivacyScreen(
+                                            link:
+                                                "https://admasolusi.com/privacy")),
                               text: 'Ketentuan layanan ',
                               style: AppTypo.captionAccent.copyWith(
                                   fontWeight: FontWeight.w700,
@@ -216,12 +214,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                 ..onTap = () => kIsWeb
                                     ? _launchUrl(
                                         "https://admasolusi.com/privacy")
-                                    : Container(),
-                              // AppExt.pushScreen(
-                              //     context,
-                              //     WebviewAdmaPrivacyScreen(
-                              //         link:
-                              //             "https://admasolusi.com/privacy")),
+                                    : AppExt.pushScreen(
+                                        context,
+                                        WebviewAdmaPrivacyScreen(
+                                            link:
+                                                "https://admasolusi.com/privacy")),
                               text: 'kebijakan privasi',
                               style: AppTypo.captionAccent.copyWith(
                                   fontWeight: FontWeight.w700,
