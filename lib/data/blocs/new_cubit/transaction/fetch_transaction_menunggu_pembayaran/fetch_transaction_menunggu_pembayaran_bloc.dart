@@ -15,47 +15,34 @@ class FetchTransactionMenungguPembayaranBloc extends Bloc<
     FetchTransactionMenungguPembayaranEvent,
     FetchTransactionMenungguPembayaranState> {
   FetchTransactionMenungguPembayaranBloc()
-      : super(FetchTransactionMenungguPembayaranInitial());
+      : super(FetchTransactionMenungguPembayaranInitial()){
+        on<TransactionMenungguPembayaranFetched>(onTransactionMenungguPembayaranFetched);
+        on<TransactionMenungguPembayaranLoadedAfterDelete>(onTransactionMenungguPembayaranLoadedAfterDelete);
+      }
 
   final TransactionRepository repository = TransactionRepository();
 
-  // @override
-  // Stream<Transition<FetchTransactionMenungguPembayaranEvent, FetchTransactionMenungguPembayaranState>> transformEvents(
-  //     Stream<FetchTransactionMenungguPembayaranEvent> events,
-  //     TransitionFunction<FetchTransactionMenungguPembayaranEvent, FetchTransactionMenungguPembayaranState> transitionFn,
-  //     ) {
-  //   return super.transformEvents(
-  //     events.throttleTime(const Duration(milliseconds: 500)),
-  //     transitionFn,
-  //   );
-  // }
-
-  @override
-  Stream<FetchTransactionMenungguPembayaranState> mapEventToState(
-      FetchTransactionMenungguPembayaranEvent event) async* {
-    if (event is TransactionMenungguPembayaranFetched) {
-      yield FetchTransactionMenungguPembayaranLoading();
-      yield await _mapTransactionMenungguPembayaranFetchedToState(state, event);
+  onTransactionMenungguPembayaranFetched(
+      TransactionMenungguPembayaranFetched event, Emitter<FetchTransactionMenungguPembayaranState> emit) async {
+    emit(FetchTransactionMenungguPembayaranLoading());
+    try {
+      final response = await repository.fetchMenungguPembayaranTransactions();
+      emit(FetchTransactionMenungguPembayaranSuccess(response.data));
+    } catch (error) {
+      emit(FetchTransactionMenungguPembayaranFailure(error.toString()));
     }
-    if (event is TransactionMenungguPembayaranLoadedAfterDelete) {
-      final menungguPembayaran = event.order.data
+    
+  }
+
+  onTransactionMenungguPembayaranLoadedAfterDelete(TransactionMenungguPembayaranLoadedAfterDelete event,
+      Emitter<FetchTransactionMenungguPembayaranState> emit) async {
+    final menungguPembayaran = event.order.data
           .where((element) =>
               element.status.toLowerCase() == "menunggu pembayaran")
           .toList();
-      yield FetchTransactionMenungguPembayaranSuccessAfterDelete(
-          menungguPembayaran);
-    }
+    emit(FetchTransactionMenungguPembayaranSuccessAfterDelete(
+          menungguPembayaran));
   }
 
-  Future<FetchTransactionMenungguPembayaranState>
-      _mapTransactionMenungguPembayaranFetchedToState(
-          FetchTransactionMenungguPembayaranState state,
-          TransactionMenungguPembayaranFetched event) async {
-    try {
-      final response = await repository.fetchMenungguPembayaranTransactions();
-      return FetchTransactionMenungguPembayaranSuccess(response.data);
-    } catch (error) {
-      return FetchTransactionMenungguPembayaranFailure(error.toString());
-    }
-  }
+
 }

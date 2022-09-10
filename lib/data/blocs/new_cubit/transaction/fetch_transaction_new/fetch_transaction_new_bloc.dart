@@ -5,8 +5,6 @@ import 'package:flutter/foundation.dart';
 import 'package:marketplace/data/models/new_models/order.dart';
 import 'package:marketplace/data/repositories/new_repositories/transaction_repository.dart';
 import 'package:marketplace/utils/extensions.dart' as AppExt;
-import 'package:meta/meta.dart';
-import 'package:rxdart/rxdart.dart';
 
 part 'fetch_transaction_new_event.dart';
 
@@ -14,39 +12,16 @@ part 'fetch_transaction_new_state.dart';
 
 class FetchTransactionNewBloc
     extends Bloc<FetchTransactionNewEvent, FetchTransactionNewState> {
-  FetchTransactionNewBloc() : super(FetchTransactionNewState());
+  FetchTransactionNewBloc() : super(FetchTransactionNewState()) {
+    on<TransactionFetched>(onTransactionFetched);
+    on<TransactionLoadedNext>(onTransactionLoadedNext);
+  }
 
   final TransactionRepository repository = TransactionRepository();
 
-  // @override
-  // Stream<Transition<FetchTransactionNewEvent, FetchTransactionNewState>>
-  //     transformEvents(
-  //   Stream<FetchTransactionNewEvent> events,
-  //   TransitionFunction<FetchTransactionNewEvent, FetchTransactionNewState>
-  //       transitionFn,
-  // ) {
-  //   return super.transformEvents(
-  //     events.throttleTime(const Duration(milliseconds: 500)),
-  //     transitionFn,
-  //   );
-  // }
-
-  @override
-  Stream<FetchTransactionNewState> mapEventToState(
-      FetchTransactionNewEvent event) async* {
-    if (event is TransactionFetched) {
-      debugPrint("print loading transacion");
-      yield FetchTransactionNewState(status: FetchTransactionNewStatus.loading);
-      yield await _mapTransactionFetchedToState(state, event);
-    }
-    if (event is TransactionLoadedNext) {
-      yield state.copyWith(status: FetchTransactionNewStatus.loadingNext);
-      yield await _mapTransactionFetchedNextPageToState(state);
-    }
-  }
-
-  Future<FetchTransactionNewState> _mapTransactionFetchedToState(
-      FetchTransactionNewState state, TransactionFetched event) async {
+  onTransactionFetched(TransactionFetched event, Emitter<FetchTransactionNewState> emit) async {
+    debugPrint("print loading transacion");
+    emit(FetchTransactionNewState(status: FetchTransactionNewStatus.loading));
     try {
       debugPrint("stat3e $state");
       if (state.nextPage == null) return state;
@@ -85,10 +60,10 @@ class FetchTransactionNewBloc
             .where((element) =>
                 element.status.toLowerCase() != "menunggu pembayaran")
             .toList();
-        return FetchTransactionNewState(
+        emit(FetchTransactionNewState(
             status: FetchTransactionNewStatus.success,
             order: hideMenungguPembayaran,
-            nextPage: response.links.next);
+            nextPage: response.links.next));
       } else {
         debugPrint("status ${event.status}");
         final response = await repository.fetchFilterTransactions(
@@ -100,37 +75,41 @@ class FetchTransactionNewBloc
             .where((element) =>
                 element.status.toLowerCase() != "menunggu pembayaran")
             .toList();
-        return FetchTransactionNewState(
+        emit(FetchTransactionNewState(
             status: FetchTransactionNewStatus.success,
             order: hideMenungguPembayaran,
-            nextPage: response.links.next);
+            nextPage: response.links.next)) ;
       }
     } catch (error) {
-      return FetchTransactionNewState(
-          status: FetchTransactionNewStatus.failure, message: error.toString());
+      emit(FetchTransactionNewState(
+          status: FetchTransactionNewStatus.failure, message: error.toString()));
     }
   }
 
-  Future<FetchTransactionNewState> _mapTransactionFetchedNextPageToState(
-      FetchTransactionNewState state) async {
+  onTransactionLoadedNext(TransactionLoadedNext event,
+      Emitter<FetchTransactionNewState> emit) async {
+    emit(state.copyWith(status: FetchTransactionNewStatus.loadingNext));
     try {
       debugPrint("next ${state.nextPage}");
       if (state.nextPage == null) {
-        return state.copyWith(status: FetchTransactionNewStatus.empty);
-      }
-      final response =
+        emit(state.copyWith(status: FetchTransactionNewStatus.empty));
+      }else{
+        final response =
           await repository.fetchTransactionsWithoutBaseurl(state.nextPage);
       final hideMenungguPembayaran = response.data
           .where((element) =>
               element.status.toLowerCase() != "menunggu pembayaran")
           .toList();
-      return FetchTransactionNewState(
+      emit(FetchTransactionNewState(
           status: FetchTransactionNewStatus.success,
           order: state.order..addAll(hideMenungguPembayaran),
-          nextPage: response.links.next);
+          nextPage: response.links.next));
+      }
+      
     } catch (error) {
-      return state.copyWith(
-          status: FetchTransactionNewStatus.failure, message: error.toString());
+      emit(state.copyWith(
+          status: FetchTransactionNewStatus.failure, message: error.toString()));
     }
   }
+
 }
