@@ -11,20 +11,20 @@ part 'otp_event.dart';
 part 'otp_state.dart';
 
 class OtpBloc extends Bloc<OtpEvent, OtpState> {
-  final AuthenticationRepository _authenticationRepository =
-      AuthenticationRepository();
+  final UserDataCubit userDataCubit;
+
+  OtpBloc({@required this.userDataCubit}) : super(OtpInitial()) {
+    on<OtpEvent>(onOtpEvent);
+  }
+
   final UserRepository _userRepository = UserRepository();
   final CartRepository _cartRepository = CartRepository();
+  final AuthenticationRepository _authenticationRepository =
+      AuthenticationRepository();
 
-  final UserDataCubit userDataCubit;
-  OtpBloc({@required this.userDataCubit}) : super(OtpInitial());
-
-  @override
-  Stream<OtpState> mapEventToState(
-    OtpEvent event,
-  ) async* {
+  onOtpEvent(OtpEvent event, Emitter<OtpState> emit) async {
     if (event is OtpSubmited) {
-      yield OtpLoading();
+      emit(OtpLoading());
       try {
         final SignInResponse signInResponse =
             await _authenticationRepository.otpVerification(
@@ -32,16 +32,16 @@ class OtpBloc extends Bloc<OtpEvent, OtpState> {
 
         await _authenticationRepository.persistToken(signInResponse.token);
         await userDataCubit.appStarted();
-        yield OtpSuccess();
+        emit(OtpSuccess());
       } catch (error) {
-        yield OtpFailure(error.toString());
+        emit(OtpFailure(error.toString()));
       }
     } else if (event is OtpRetry) {
-      yield OtpRetryLoading();
+      emit(OtpRetryLoading());
 
       await _authenticationRepository.authenticate(
           phoneNumber: "62${event.phoneNumber}");
-      yield OtpRetrySuccess();
+      emit(OtpRetrySuccess());
     }
   }
 }

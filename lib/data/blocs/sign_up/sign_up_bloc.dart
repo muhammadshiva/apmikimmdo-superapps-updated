@@ -11,14 +11,13 @@ part 'sign_up_state.dart';
 class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
   final UserRepository _userRepository = UserRepository();
 
-  SignUpBloc() : super(SignUpInitial());
+  SignUpBloc() : super(SignUpInitial()){
+    on<SignUpEvent>(onSignUpEvent);
+  }
 
-  @override
-  Stream<SignUpState> mapEventToState(
-    SignUpEvent event,
-  ) async* {
+  onSignUpEvent(SignUpEvent event, Emitter<SignUpState> emit)async{
     if (event is SignUpButtonPressed) {
-      yield SignUpLoading();
+      emit(SignUpLoading());
 
       try {
         try {
@@ -31,10 +30,12 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
         await _userRepository.signUp(
             name: event.name, phoneNumber: "62${event.phoneNumber}");
 
-        yield SignUpSuccess(phoneNumber: event.phoneNumber, otpTimeOut: 50);
+        emit(SignUpSuccess(phoneNumber: event.phoneNumber, otpTimeOut: 50));
       } catch (error) {
-        yield SignUpFailure(error: error.toString());
+        emit(SignUpFailure(error: error.toString()));
       }
     }
   }
+
+
 }
