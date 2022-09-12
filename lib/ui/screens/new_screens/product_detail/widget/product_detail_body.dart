@@ -48,6 +48,7 @@ class _ProductDetailBodyState extends State<ProductDetailBody> {
   final RecipentRepository _repoRecipent = RecipentRepository();
   AddProductTokoSayaCubit _addProductTokoSayaCubit;
   FetchSelectedRecipentCubit _fetchSelectedRecipentCubit;
+  AddToCartCubit _addToCartCubit;
 
   // List<String> imageProduct = [];
 
@@ -63,6 +64,8 @@ class _ProductDetailBodyState extends State<ProductDetailBody> {
     variantIdSelected = widget.product.productVariant.length > 0
         ? widget.product.productVariant[0].id
         : 0;
+    _addToCartCubit =
+        AddToCartCubit(userDataCubit: BlocProvider.of<UserDataCubit>(context));
     // addProductPhoto();
     super.initState();
   }
@@ -81,6 +84,7 @@ class _ProductDetailBodyState extends State<ProductDetailBody> {
   void dispose() {
     _addProductTokoSayaCubit.close();
     _fetchSelectedRecipentCubit.close();
+     _addToCartCubit.close();
     super.dispose();
   }
 
@@ -113,6 +117,9 @@ class _ProductDetailBodyState extends State<ProductDetailBody> {
         BlocProvider(
           create: (_) => _fetchSelectedRecipentCubit,
         ),
+        BlocProvider(
+            create: (_) => _addToCartCubit,
+          ),
       ],
       child: MultiBlocListener(
         listeners: [
@@ -180,6 +187,31 @@ class _ProductDetailBodyState extends State<ProductDetailBody> {
               }
             },
           ),
+          BlocListener(
+              bloc: _addToCartCubit,
+              listener: (_, state) {
+                if (state is AddToCartFailure) {
+                  AppExt.popScreen(context);
+                  BSFeedback.show(
+                    context,
+                    icon: Boxicons.bx_x_circle,
+                    color: AppColor.red,
+                    title: "Produk gagal ditambahkan ke keranjang",
+                    description: "${state.message}",
+                  );
+                  return;
+                }
+                if (state is AddToCartSuccess) {
+                  AppExt.popScreen(context);
+                  BottomSheetFeedbackAddCart.show(
+                    context,
+                    title: "Produk ditambahkan ke keranjang",
+                    description: "Silakan checkout untuk melakukan pembelian",
+                  );
+                  return;
+                }
+              },
+            ),
         ],
         child: AnnotatedRegion<SystemUiOverlayStyle>(
           value: SystemUiOverlayStyle.light,

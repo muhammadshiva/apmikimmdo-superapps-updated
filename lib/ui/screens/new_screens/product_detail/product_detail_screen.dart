@@ -38,7 +38,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen>
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   FetchProductDetailCubit _fetchProductDetailCubit;
   FetchProductRecomCubit _fetchProductRecomCubit;
-  AddToCartCubit _addToCartCubit;
+  
 
   AnimationController _colorAnimationController;
   Animation<Color> _colorTween,
@@ -52,8 +52,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen>
       ..load(
         productId: widget.productId,
       );
-    _addToCartCubit =
-        AddToCartCubit(userDataCubit: BlocProvider.of<UserDataCubit>(context));
+    
     _fetchProductRecomCubit = FetchProductRecomCubit()..fetchProductRecom();
 
     super.initState();
@@ -75,7 +74,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen>
   void dispose() {
     _fetchProductDetailCubit.close();
     _fetchProductRecomCubit.close();
-    _addToCartCubit.close();
+   
     // _fetchShippingAddressesCubit.close();
     super.dispose();
   }
@@ -104,112 +103,80 @@ class _ProductDetailScreenState extends State<ProductDetailScreen>
           BlocProvider(
             create: (_) => _fetchProductDetailCubit,
           ),
-          BlocProvider(
-            create: (_) => _addToCartCubit,
-          ),
+          
           BlocProvider(
             create: (_) => _fetchProductRecomCubit,
           ),
         ],
-        child: MultiBlocListener(
-          listeners: [
-            BlocListener(
-              bloc: _addToCartCubit,
-              listener: (_, state) {
-                if (state is AddToCartFailure) {
-                  AppExt.popScreen(context);
-                  BSFeedback.show(
-                    context,
-                    icon: Boxicons.bx_x_circle,
-                    color: AppColor.red,
-                    title: "Produk gagal ditambahkan ke keranjang",
-                    description: "${state.message}",
-                  );
-                  return;
-                }
-                if (state is AddToCartSuccess) {
-                  AppExt.popScreen(context);
-                  BottomSheetFeedbackAddCart.show(
-                    context,
-                    title: "Produk ditambahkan ke keranjang",
-                    description: "Silakan checkout untuk melakukan pembelian",
-                  );
-                  _fetchProductDetailCubit.reload(productId: widget.productId);
-                  return;
-                }
-              },
-            ),
-          ],
-          child: GestureDetector(
-            onTap: () => AppExt.hideKeyboard(context),
-            child: Center(
-              child: ConstrainedBox(
-                constraints:
-                    BoxConstraints(maxWidth: !context.isPhone ? 450 : 1000),
-                child: Scaffold(
-                  key: _scaffoldKey,
-                  backgroundColor: AppColor.textPrimaryInverted,
-                  body: SafeArea(
-                    child: BlocBuilder(
-                      bloc: _fetchProductDetailCubit,
-                      builder: (context, state) {
-                        return AppTrans.SharedAxisTransitionSwitcher(
-                          fillColor: Colors.transparent,
-                          transitionType: SharedAxisTransitionType.vertical,
-                          child: state is FetchProductDetailLoading
-                              ? ShimmerProductDetail()
-                              : state is FetchProductDetailFailure
-                                  ? Center(
-                                      child: state.type == ErrorType.network
-                                          ? NoConnection(onButtonPressed: () {
+        child: GestureDetector(
+          onTap: () => AppExt.hideKeyboard(context),
+          child: Center(
+            child: ConstrainedBox(
+              constraints:
+                  BoxConstraints(maxWidth: !context.isPhone ? 450 : 1000),
+              child: Scaffold(
+                key: _scaffoldKey,
+                backgroundColor: AppColor.textPrimaryInverted,
+                body: SafeArea(
+                  child: BlocBuilder(
+                    bloc: _fetchProductDetailCubit,
+                    builder: (context, state) {
+                      return AppTrans.SharedAxisTransitionSwitcher(
+                        fillColor: Colors.transparent,
+                        transitionType: SharedAxisTransitionType.vertical,
+                        child: state is FetchProductDetailLoading
+                            ? ShimmerProductDetail()
+                            : state is FetchProductDetailFailure
+                                ? Center(
+                                    child: state.type == ErrorType.network
+                                        ? NoConnection(onButtonPressed: () {
+                                            _fetchProductDetailCubit.load(
+                                                productId: widget.productId);
+                                          })
+                                        : ErrorFetch(
+                                            message: state.message,
+                                            onButtonPressed: () {
                                               _fetchProductDetailCubit.load(
-                                                  productId: widget.productId);
-                                            })
-                                          : ErrorFetch(
-                                              message: state.message,
-                                              onButtonPressed: () {
-                                                _fetchProductDetailCubit.load(
-                                                    productId:
-                                                        widget.productId);
-                                              },
-                                            ),
-                                    )
-                                  : state is FetchProductDetailSuccess
-                                      ? NotificationListener<
-                                          ScrollNotification>(
-                                          onNotification: _scrollListener,
-                                          child: Stack(
-                                            children: [
-                                              ProductDetailBody(
-                                                productId: widget.productId,
-                                                categoryId: widget.categoryId,
-                                                product: state.product,
-                                              ),
-                                              AnimatedBuilder(
-                                                animation:
-                                                    _colorAnimationController,
-                                                builder: (BuildContext context,
-                                                        Widget child) =>
-                                                    ProductDetailAppbar(
-                                                  product: state.product,
-                                                  backgroundColor:
-                                                      _colorTween.value,
-                                                  iconColor:
-                                                      _iconColorTween.value,
-                                                  iconBackundColor:
-                                                      _iconBackgroundColorTween
-                                                          .value,
-                                                  shadowColor:
-                                                      _shadowColorTween.value,
-                                                ),
-                                              ),
-                                            ],
+                                                  productId:
+                                                      widget.productId);
+                                            },
                                           ),
-                                        )
-                                      : SizedBox(),
-                        );
-                      },
-                    ),
+                                  )
+                                : state is FetchProductDetailSuccess
+                                    ? NotificationListener<
+                                        ScrollNotification>(
+                                        onNotification: _scrollListener,
+                                        child: Stack(
+                                          children: [
+                                            ProductDetailBody(
+                                              productId: widget.productId,
+                                              categoryId: widget.categoryId,
+                                              product: state.product,
+                                            ),
+                                            AnimatedBuilder(
+                                              animation:
+                                                  _colorAnimationController,
+                                              builder: (BuildContext context,
+                                                      Widget child) =>
+                                                  ProductDetailAppbar(
+                                                product: state.product,
+                                                backgroundColor:
+                                                    _colorTween.value,
+                                                iconColor:
+                                                    _iconColorTween.value,
+                                                iconBackundColor:
+                                                    _iconBackgroundColorTween
+                                                        .value,
+                                                shadowColor:
+                                                    _shadowColorTween.value,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      )
+                                    : SizedBox(),
+                      );
+                    },
                   ),
                 ),
               ),
