@@ -72,7 +72,7 @@ class _ProductDetailBodyState extends State<ProductDetailBody> {
 
   _handleAddToCart({@required int sellerId, int variantId = 0}) {
     LoadingDialog.show(context);
-    context.read<AddToCartCubit>().addToCart(
+    _addToCartCubit.addToCart(
         productId: widget.productId,
         sellerId: sellerId,
         isVariant: variantId == 0 ? 0 : 1,
