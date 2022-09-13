@@ -142,7 +142,11 @@ class _PaymentScreenState extends State<PaymentScreen> {
                             pinned: true,
                             shadowColor: Colors.black54,
                             floating: true,
-                            title: Text("Metode Pembayaran"),
+                            title: Text(
+                              "Metode Pembayaran",
+                              style: AppTypo.subtitle2
+                                  .copyWith(color: Colors.black),
+                            ),
                             brightness: Brightness.dark,
                           ),
                         ];

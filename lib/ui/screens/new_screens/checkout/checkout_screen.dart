@@ -137,7 +137,11 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                     pinned: true,
                                     shadowColor: Colors.black54,
                                     floating: true,
-                                    title: Text("Checkout"),
+                                    title: Text(
+                                      "Checkout",
+                                      style: AppTypo.subtitle2
+                                          .copyWith(color: Colors.black),
+                                    ),
                                     brightness: Brightness.dark,
                                   ),
                                 ];
