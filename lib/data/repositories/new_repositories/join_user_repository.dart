@@ -17,7 +17,7 @@ import '../authentication_repository.dart';
 class JoinUserRepository {
   final ApiProvider _provider = ApiProvider();
   final AuthenticationRepository _authenticationRepository =
-  AuthenticationRepository();
+      AuthenticationRepository();
   final String _baseUrl = AppConst.API_URL;
   final String _adsKey = AppConst.API_ADS_KEY;
   final Dio dio = new Dio();
@@ -72,7 +72,7 @@ class JoinUserRepository {
         headers: {
           HttpHeaders.authorizationHeader: 'Bearer $_token',
           HttpHeaders.contentTypeHeader: 'application/json',
-          'ADS-Key':_adsKey
+          'ADS-Key': _adsKey
         },
       ),
     );
@@ -104,10 +104,10 @@ class JoinUserRepository {
 
   Future<void> updateProfileSupplier(
       {@required String name,
-        @required String phoneNumber,
-        @required String logo,
-        @required String subdistrictId,
-        @required String address}) async {
+      @required String phoneNumber,
+      @required String logo,
+      @required String subdistrictId,
+      @required String address}) async {
     final token = await _authenticationRepository.getToken();
     var formData = new FormData.fromMap({
       "name": name,
@@ -127,7 +127,7 @@ class JoinUserRepository {
       options: Options(headers: {
         HttpHeaders.authorizationHeader: 'Bearer $token',
         HttpHeaders.contentTypeHeader: 'application/json',
-        'ADS-Key':_adsKey
+        'ADS-Key': _adsKey
       }, validateStatus: (status) => true),
     );
 
@@ -144,22 +144,22 @@ class JoinUserRepository {
 
   Future<GeneralResponse> addProductSupplier(
       {@required String name,
-        @required int categoryId,
-        @required int weight,
-        @required String unit,
-        @required int price,
-        @required int stock,
-        @required String description,
-        @required int commision,
-        @required String link,
-        @required List<String> productPhoto,
-        @required List<Uint8List> productPhotoByte,
-        @required List<int> hargaGrosir,
-        @required List<int> minimumOrder,
-        @required List<String> varianType,
-        @required List<String> varianName,
-        @required List<int> varianPrice,
-        @required List<int> varianStock}) async {
+      @required int categoryId,
+      @required int weight,
+      @required String unit,
+      @required int price,
+      @required int stock,
+      @required String description,
+      @required int commision,
+      @required String link,
+      @required List<String> productPhoto,
+      @required List<Uint8List> productPhotoByte,
+      @required List<int> hargaGrosir,
+      @required List<int> minimumOrder,
+      @required List<String> varianType,
+      @required List<String> varianName,
+      @required List<int> varianPrice,
+      @required List<int> varianStock}) async {
     final _token = await _authenticationRepository.getToken();
 
     Dio dio = new Dio();
@@ -168,7 +168,7 @@ class JoinUserRepository {
 
     for (var file in productPhoto) {
       var multipartFile =
-      await MultipartFile.fromFile(file, filename: "product");
+          await MultipartFile.fromFile(file, filename: "product");
       uploadPhoto.add(multipartFile);
     }
 
@@ -190,13 +190,13 @@ class JoinUserRepository {
       "description": description,
       "link": link,
       "commission": commision,
-      "product_photo": kIsWeb ? uploadPhotoByte : uploadPhoto,
-      "grocery_price": hargaGrosir,
-      "minimum_order": minimumOrder,
-      "variant_type": varianType,
-      "variant_name": varianName,
-      "variant_stock": varianStock,
-      "variant_price": varianPrice,
+      "product_photo[]": kIsWeb ? uploadPhotoByte : uploadPhoto,
+      "grocery_price[]": hargaGrosir,
+      "minimum_order[]": minimumOrder,
+      "variant_type[]": varianType,
+      "variant_name[]": varianName,
+      "variant_stock[]": varianStock,
+      "variant_price[]": varianPrice,
     });
 
     debugPrint("formdata ${formDataGeneral.fields}");
@@ -206,13 +206,11 @@ class JoinUserRepository {
     var response = await dio.post(
       "$_baseUrl/supplier/product-submissions/store",
       data: formDataGeneral,
-      options: Options(
-        headers: {
-          HttpHeaders.authorizationHeader: 'Bearer $_token',
-          HttpHeaders.contentTypeHeader: 'application/json',
-          'ADS-Key':_adsKey
-        },
-      ),
+      options: Options(headers: {
+        HttpHeaders.authorizationHeader: 'Bearer $_token',
+        HttpHeaders.contentTypeHeader: 'application/json',
+        'ADS-Key': _adsKey
+      }, validateStatus: (status) => true),
     );
     debugPrint("status code ${response.statusCode}");
     debugPrint("response $response");
@@ -229,23 +227,23 @@ class JoinUserRepository {
 
   Future<GeneralResponse> updateProductSupplier(
       {@required int productId,
-        @required String name,
-        @required int categoryId,
-        @required int weight,
-        @required String unit,
-        @required int price,
-        @required int stock,
-        @required String description,
-        @required int commision,
-        @required String link,
-        @required List<String> productPhoto,
-        @required List<Uint8List> productPhotoByte,
-        @required List<int> hargaGrosir,
-        @required List<int> minimumOrder,
-        @required List<String> varianType,
-        @required List<String> varianName,
-        @required List<int> varianPrice,
-        @required List<int> varianStock}) async {
+      @required String name,
+      @required int categoryId,
+      @required int weight,
+      @required String unit,
+      @required int price,
+      @required int stock,
+      @required String description,
+      @required int commision,
+      @required String link,
+      @required List<String> productPhoto,
+      @required List<Uint8List> productPhotoByte,
+      @required List<int> hargaGrosir,
+      @required List<int> minimumOrder,
+      @required List<String> varianType,
+      @required List<String> varianName,
+      @required List<int> varianPrice,
+      @required List<int> varianStock}) async {
     final _token = await _authenticationRepository.getToken();
 
     Dio dio = new Dio();
@@ -263,11 +261,9 @@ class JoinUserRepository {
     //   uploadPhotoByte.add(multipartFile);
     // }
 
-
     for (var file in productPhoto) {
-      var multipartFile = await MultipartFile.fromFile(
-          file, filename: "product"
-      );
+      var multipartFile =
+          await MultipartFile.fromFile(file, filename: "product");
       uploadPhoto.add(multipartFile);
     }
 
@@ -306,14 +302,11 @@ class JoinUserRepository {
     var response = await dio.post(
       "$_baseUrl/supplier/products/$productId/update",
       data: formDataGeneral,
-      options: Options(
-          headers: {
-            HttpHeaders.authorizationHeader: 'Bearer $_token',
-            HttpHeaders.contentTypeHeader: 'application/json',
-            'ADS-Key':_adsKey
-          },
-          validateStatus: (status) => true
-      ),
+      options: Options(headers: {
+        HttpHeaders.authorizationHeader: 'Bearer $_token',
+        HttpHeaders.contentTypeHeader: 'application/json',
+        'ADS-Key': _adsKey
+      }, validateStatus: (status) => true),
     );
     debugPrint("status code ${response.statusCode}");
     debugPrint("response $response");
@@ -330,15 +323,13 @@ class JoinUserRepository {
     }
   }
 
-  Future<SupplierDataResponse> getSupplierProductList({
-    String keyword
-  }) async {
+  Future<SupplierDataResponse> getSupplierProductList({String keyword}) async {
     final _token = await _authenticationRepository.getToken();
     final response =
-    await _provider.get("/supplier/product-submissions", headers: {
+        await _provider.get("/supplier/product-submissions", headers: {
       HttpHeaders.contentTypeHeader: 'text/plain',
       HttpHeaders.authorizationHeader: 'Bearer $_token',
-      'ADS-Key':_adsKey
+      'ADS-Key': _adsKey
     });
     List<dynamic> dataList = response['data'];
     List<dynamic> filteredData = [];
@@ -346,14 +337,14 @@ class JoinUserRepository {
       filteredData = dataList
           .where((res) => res['product_name'].contains(keyword))
           .where((e) =>
-      e['product_status'] == 'Menunggu Verifikasi' ||
-          e['product_status'] == 'Ditolak')
+              e['product_status'] == 'Menunggu Verifikasi' ||
+              e['product_status'] == 'Ditolak')
           .toList();
-    }else{
+    } else {
       filteredData = dataList
           .where((e) =>
-      e['product_status'] == 'Menunggu Verifikasi' ||
-          e['product_status'] == 'Ditolak')
+              e['product_status'] == 'Menunggu Verifikasi' ||
+              e['product_status'] == 'Ditolak')
           .toList();
     }
     Map<String, dynamic> dataResult = {"data": filteredData};
@@ -367,13 +358,14 @@ class JoinUserRepository {
     final response = await _provider.get("/supplier/products", headers: {
       HttpHeaders.contentTypeHeader: 'text/plain',
       HttpHeaders.authorizationHeader: 'Bearer $_token',
-      'ADS-Key':_adsKey
+      'ADS-Key': _adsKey
     });
     List<dynamic> dataList = response['data'];
     Map<String, dynamic> mappingResult = {};
     if (keyword != null) {
-      final filteredData =
-      dataList.where((data) => data["product_name"].contains(keyword)).toList();
+      final filteredData = dataList
+          .where((data) => data["product_name"].contains(keyword))
+          .toList();
       mappingResult = {"data": filteredData};
       return SupplierDataResponse.fromJson(mappingResult);
     } else {
@@ -387,17 +379,17 @@ class JoinUserRepository {
         .delete("/supplier/product-submissions/destroy/$id", headers: {
       HttpHeaders.contentTypeHeader: 'text/plain',
       HttpHeaders.authorizationHeader: 'Bearer $_token',
-      'ADS-Key':_adsKey
+      'ADS-Key': _adsKey
     });
   }
 
   Future<void> deleteSupplierProductApprovedList(int id) async {
     final _token = await _authenticationRepository.getToken();
-    final response = await _provider
-        .delete("/supplier/products/$id/destroy/", headers: {
+    final response =
+        await _provider.delete("/supplier/products/$id/destroy/", headers: {
       HttpHeaders.contentTypeHeader: 'text/plain',
       HttpHeaders.authorizationHeader: 'Bearer $_token',
-      'ADS-Key':_adsKey
+      'ADS-Key': _adsKey
     });
   }
 
@@ -415,7 +407,7 @@ class JoinUserRepository {
       options: Options(headers: {
         HttpHeaders.authorizationHeader: 'Bearer $token',
         HttpHeaders.contentTypeHeader: 'application/json',
-        'ADS-Key':_adsKey
+        'ADS-Key': _adsKey
       }, validateStatus: (status) => true),
     );
 
@@ -441,7 +433,7 @@ class JoinUserRepository {
         .post("/reseller/products/store", body: jsonEncode(body), headers: {
       HttpHeaders.contentTypeHeader: 'application/json',
       HttpHeaders.authorizationHeader: 'Bearer $_token',
-      'ADS-Key':_adsKey
+      'ADS-Key': _adsKey
     });
 
     return GeneralResponse.fromJson(response);
@@ -452,7 +444,7 @@ class JoinUserRepository {
     final response = await _provider.get("/reseller/products", headers: {
       HttpHeaders.contentTypeHeader: 'text/plain',
       HttpHeaders.authorizationHeader: 'Bearer $_token',
-      'ADS-Key':_adsKey
+      'ADS-Key': _adsKey
     });
 
     return TokoSayaDataResponse.fromJson(response);
@@ -464,7 +456,7 @@ class JoinUserRepository {
         .delete("/reseller/products/$productId/destroy", headers: {
       HttpHeaders.contentTypeHeader: 'text/plain',
       HttpHeaders.authorizationHeader: 'Bearer $_token',
-      'ADS-Key':_adsKey
+      'ADS-Key': _adsKey
     });
 
     return GeneralResponse.fromJson(response);
@@ -475,88 +467,83 @@ class JoinUserRepository {
     final response = await _provider.get("/reseller/customer-list", headers: {
       HttpHeaders.contentTypeHeader: 'text/plain',
       HttpHeaders.authorizationHeader: 'Bearer $_token',
-      'ADS-Key':_adsKey
+      'ADS-Key': _adsKey
     });
 
     return TokoSayaCustomersResponse.fromJson(response);
   }
 
   Future<ResellerShopProductDataResponse> getProductListResellerShop(
-      {@required String nameSlugReseller,@required int subdistrictId}) async {
-    final response =
-        await _provider.get("/product/reseller/$nameSlugReseller?subdistrict_id=$subdistrictId", headers: {
-      HttpHeaders.contentTypeHeader: 'text/plain',
-      'ADS-Key':_adsKey
-    });
+      {@required String nameSlugReseller, @required int subdistrictId}) async {
+    final response = await _provider.get(
+        "/product/reseller/$nameSlugReseller?subdistrict_id=$subdistrictId",
+        headers: {
+          HttpHeaders.contentTypeHeader: 'text/plain',
+          'ADS-Key': _adsKey
+        });
 
     return ResellerShopProductDataResponse.fromJson(response);
   }
 
   Future<ProductDetailResponse> fetchProductWarungDetail(
-      {@required String slugWarung,@required String slugProduct}) async {
-    final response = await _provider.get("/$slugWarung/products/$slugProduct", headers: {
-      HttpHeaders.contentTypeHeader: 'text/plain',
-      'ADS-Key':_adsKey
-    });
+      {@required String slugWarung, @required String slugProduct}) async {
+    final response = await _provider.get("/$slugWarung/products/$slugProduct",
+        headers: {
+          HttpHeaders.contentTypeHeader: 'text/plain',
+          'ADS-Key': _adsKey
+        });
     return ProductDetailResponse.fromJson(response);
   }
 
   Future<ResellerShopProductDataResponse> getProductListBySubdistrict(
       {@required int subdistrictId}) async {
-    final response =
-        await _provider.get("/product/subdistrict/$subdistrictId", headers: {
-      HttpHeaders.contentTypeHeader: 'text/plain',
-      'ADS-Key':_adsKey
-    });
+    final response = await _provider.get("/product/subdistrict/$subdistrictId",
+        headers: {
+          HttpHeaders.contentTypeHeader: 'text/plain',
+          'ADS-Key': _adsKey
+        });
 
     return ResellerShopProductDataResponse.fromJson(response);
   }
 
   Future<ResellerShopDataResponse> getDataResellerShop(
       {@required String nameSlugReseller}) async {
-    final response =
-        await _provider.get("/reseller/profile/$nameSlugReseller", headers: {
-      HttpHeaders.contentTypeHeader: 'text/plain',
-      'ADS-Key':_adsKey
-    });
+    final response = await _provider.get("/reseller/profile/$nameSlugReseller",
+        headers: {
+          HttpHeaders.contentTypeHeader: 'text/plain',
+          'ADS-Key': _adsKey
+        });
 
     return ResellerShopDataResponse.fromJson(response);
   }
 
   Future<void> updateProfileShop(
-      {
-        @required String name,
-        @required String phoneNumber,
-        @required String logo,
-        @required String subdistrictId,
-        @required String address
-      }) async {
-    
+      {@required String name,
+      @required String phoneNumber,
+      @required String logo,
+      @required String subdistrictId,
+      @required String address}) async {
     final token = await _authenticationRepository.getToken();
-    var formData = 
-    new FormData.fromMap({
+    var formData = new FormData.fromMap({
       "name": name,
       "phonenumber": phoneNumber,
-      "logo": logo != null ? await MultipartFile.fromFile(
-          logo, filename: "logo"
-      ) : null,
+      "logo": logo != null
+          ? await MultipartFile.fromFile(logo, filename: "logo")
+          : null,
       "subdistrict_id": subdistrictId,
       "address": address,
     });
 
     debugPrint("formdata ${formData.fields}");
 
-   var response = await dio.post(
+    var response = await dio.post(
       "${AppConst.API_URL}/reseller/update-profile",
       data: formData,
-      options: Options(
-        headers: {
-          HttpHeaders.authorizationHeader: 'Bearer $token',
-          HttpHeaders.contentTypeHeader: 'application/json',
-          'ADS-Key':_adsKey
-        },
-        validateStatus: (status) => true
-      ),
+      options: Options(headers: {
+        HttpHeaders.authorizationHeader: 'Bearer $token',
+        HttpHeaders.contentTypeHeader: 'application/json',
+        'ADS-Key': _adsKey
+      }, validateStatus: (status) => true),
     );
 
     // debugPrint("status code ${response.statusCode}");
@@ -570,27 +557,26 @@ class JoinUserRepository {
     }
   }
 
-
   Future<ListWarungDataResponse> getListWarungBySubdistrict(
-      {@required int subdistrictId,@required String keyword}) async {
-    final response =
-        await _provider.get("/reseller/subdistrict/$subdistrictId", headers: {
-      HttpHeaders.contentTypeHeader: 'text/plain',
-      'ADS-Key':_adsKey
-    });
+      {@required int subdistrictId, @required String keyword}) async {
+    final response = await _provider.get("/reseller/subdistrict/$subdistrictId",
+        headers: {
+          HttpHeaders.contentTypeHeader: 'text/plain',
+          'ADS-Key': _adsKey
+        });
 
     List<dynamic> dataList = response['data'];
     Map<String, dynamic> mappingResult = {};
     if (keyword != null) {
-      final filteredData =
-      dataList.where((data) => data["name"].toLowerCase().contains(keyword)).toList();
+      final filteredData = dataList
+          .where((data) => data["name"].toLowerCase().contains(keyword))
+          .toList();
       mappingResult = {"data": filteredData};
       return ListWarungDataResponse.fromJson(mappingResult);
     } else {
       return ListWarungDataResponse.fromJson(response);
     }
   }
-
 
   void setSlugReseller({
     @required String slug,
@@ -599,7 +585,6 @@ class JoinUserRepository {
   }
 
   String getSlugReseller() {
-   return gs.read('slugReseller');
+    return gs.read('slugReseller');
   }
-
 }
