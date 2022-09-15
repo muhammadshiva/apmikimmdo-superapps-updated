@@ -102,7 +102,9 @@ class _ProducerDashboardScreenState extends State<ProducerDashboardScreen> {
                                         shadowColor: Colors.black54,
                                         floating: true,
                                         title: Text(
-                                            "Profil ${widget.isReseller ? 'Reseller' : 'Supplier'}"),
+                                          "Profil ${widget.isReseller ? 'Reseller' : 'Supplier'}",
+                                          style: AppTypo.subtitle2,
+                                        ),
                                         brightness: Brightness.dark,
                                       ),
                                     ];

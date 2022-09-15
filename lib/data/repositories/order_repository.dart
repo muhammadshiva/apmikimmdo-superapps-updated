@@ -27,34 +27,30 @@ class OrderRepository {
     @required List<String> note,
     @required String verificationMethod,
     @required int paymentMethodId,
-    }) async {
-    
+  }) async {
     final token = await _authenticationRepository.getToken();
     var formData = new FormData.fromMap({
-      "item_id": itemId,
+      "item_id[]": itemId,
       "recipient_id": recipientId,
-      "shipping_code": shippingCode,
-      "ongkir": ongkir,
-      "note": note,
+      "shipping_code[]": shippingCode,
+      "ongkir[]": ongkir,
+      "note[]": note,
       "verification_method": verificationMethod,
       "payment_method_id": paymentMethodId,
     });
 
     debugPrint("formdata ${formData.fields}");
 
-   var response = await dio.post(
+    var response = await dio.post(
       "$_baseUrl/order/store",
       data: formData,
-      options: Options(
-        headers: {
-          HttpHeaders.authorizationHeader: 'Bearer $token',
-          HttpHeaders.contentTypeHeader: 'application/json',
-          'ADS-Key':_adsKey
-        },
-        validateStatus: (status) => true
-      ),
+      options: Options(headers: {
+        HttpHeaders.authorizationHeader: 'Bearer $token',
+        HttpHeaders.contentTypeHeader: 'application/json',
+        'ADS-Key': _adsKey
+      }, validateStatus: (status) => true),
     );
-
+    // debugPrint("TEST ITEM ID : $itemId");
     // debugPrint("status code ${response.statusCode}");
     debugPrint("response $response");
 
@@ -69,36 +65,50 @@ class OrderRepository {
     }
   }
 
-  Future<GeneralOrderResponse> addOrderNoAuth({
-    @required String slug,
-    @required String name,
-    @required String phoneNumber,
-    @required String email,
-    @required String address,
-    @required int subdistrictId,
-    @required String verificationMethod,
-    @required int paymentMethodId,
-    @required List<NewCart> carts,
-     List<NoteTemp> notes,
-     List<OngkirTemp> ongkirs,
-     List<ShippingCodeTemp> shppingCodes
-    }) async {    
-
-
-      debugPrint("CHECK NOTES" + notes.toString());
-      debugPrint("CHECK ONGKIRS" + ongkirs.toString());
-      debugPrint("CHECK SHIPPINGCODES" + shppingCodes.toString());
-      debugPrint("CHECK PRODUCTS" + carts[0].product.map((e) => ProductAddOrderNoAuth(productId: e.id, isVariant: e.variantSelected != null ? 1 : 0  , variantId: e.variantSelected != null ? e.variantSelected.id : 0,quantity: e.quantity)).toList().toString());
+  Future<GeneralOrderResponse> addOrderNoAuth(
+      {@required String slug,
+      @required String name,
+      @required String phoneNumber,
+      @required String email,
+      @required String address,
+      @required int subdistrictId,
+      @required String verificationMethod,
+      @required int paymentMethodId,
+      @required List<NewCart> carts,
+      List<NoteTemp> notes,
+      List<OngkirTemp> ongkirs,
+      List<ShippingCodeTemp> shppingCodes}) async {
+    debugPrint("CHECK NOTES" + notes.toString());
+    debugPrint("CHECK ONGKIRS" + ongkirs.toString());
+    debugPrint("CHECK SHIPPINGCODES" + shppingCodes.toString());
+    debugPrint("CHECK PRODUCTS" +
+        carts[0]
+            .product
+            .map((e) => ProductAddOrderNoAuth(
+                productId: e.id,
+                isVariant: e.variantSelected != null ? 1 : 0,
+                variantId: e.variantSelected != null ? e.variantSelected.id : 0,
+                quantity: e.quantity))
+            .toList()
+            .toString());
 
     List<CartTempAddOrderNoAuth> cartsTemp = [];
     debugPrint("COK 1");
     for (int i = 0; i < carts.length; i++) {
-        cartsTemp.add(CartTempAddOrderNoAuth(
-          supplierId: carts[i].sellerId, 
-          ongkir: ongkirs[i].ongkir, 
-          shippingCode: shppingCodes[i].shippingCode, 
-          note: notes[i].note, 
-          products: carts[i].product.map((e) => ProductAddOrderNoAuth(productId: e.id, isVariant: e.variantSelected != null ? 1 : 0, variantId: e.variantSelected != null ? e.variantSelected.id : 0 , quantity: e.quantity)).toList()));
+      cartsTemp.add(CartTempAddOrderNoAuth(
+          supplierId: carts[i].sellerId,
+          ongkir: ongkirs[i].ongkir,
+          shippingCode: shppingCodes[i].shippingCode,
+          note: notes[i].note,
+          products: carts[i]
+              .product
+              .map((e) => ProductAddOrderNoAuth(
+                  productId: e.id,
+                  isVariant: e.variantSelected != null ? 1 : 0,
+                  variantId:
+                      e.variantSelected != null ? e.variantSelected.id : 0,
+                  quantity: e.quantity))
+              .toList()));
     }
     debugPrint("COK 2");
     Map<String, dynamic> body = {
@@ -113,11 +123,12 @@ class OrderRepository {
       "carts": cartsTemp,
     };
     debugPrint("COK 3");
-    final response = await _provider
-        .post("/order/noauth/store", body: jsonEncode(body), headers: {
-      HttpHeaders.contentTypeHeader: 'application/json',
-      'ADS-Key':_adsKey
-    });
+    final response = await _provider.post("/order/noauth/store",
+        body: jsonEncode(body),
+        headers: {
+          HttpHeaders.contentTypeHeader: 'application/json',
+          'ADS-Key': _adsKey
+        });
     debugPrint("COK 4");
     return GeneralOrderResponse.fromJson(response);
   }
@@ -128,7 +139,7 @@ class OrderRepository {
     final response = await _provider.get("/payment/show/method", headers: {
       HttpHeaders.authorizationHeader: 'Bearer $token',
       HttpHeaders.contentTypeHeader: 'application/json',
-      'ADS-Key':_adsKey
+      'ADS-Key': _adsKey
     });
     return PaymentMethodResponse.fromJson(response);
   }
@@ -144,14 +155,11 @@ class OrderRepository {
     var response = await dio.post(
       "$_baseUrl/payment/change/$paymentId",
       data: formData,
-      options: Options(
-        headers: {
-          HttpHeaders.authorizationHeader: 'Bearer $token',
-          HttpHeaders.contentTypeHeader: 'application/json',
-          'ADS-Key':_adsKey
-        },
-        validateStatus: (status) => true
-      ),
+      options: Options(headers: {
+        HttpHeaders.authorizationHeader: 'Bearer $token',
+        HttpHeaders.contentTypeHeader: 'application/json',
+        'ADS-Key': _adsKey
+      }, validateStatus: (status) => true),
     );
 
     // debugPrint("status code ${response.statusCode}");
@@ -166,7 +174,6 @@ class OrderRepository {
       debugPrint("myresponse ${response}");
       throw GeneralException(response.data.toString());
     }
-    
   }
 
   Future<GeneralResponse> cancelOrder({@required int paymentId}) async {
@@ -175,7 +182,7 @@ class OrderRepository {
         await _provider.post("/order/$paymentId/cancel-order", headers: {
       HttpHeaders.authorizationHeader: 'Bearer $token',
       HttpHeaders.contentTypeHeader: 'application/json',
-      'ADS-Key':_adsKey
+      'ADS-Key': _adsKey
     });
     return GeneralResponse.fromJson(response);
   }
@@ -201,14 +208,11 @@ class OrderRepository {
 
   Future<CheckoutResponse> getPaymentOrder({@required orderId}) async {
     final token = await _authenticationRepository.getToken();
-    final response =
-        await _provider.get("/order/get/$orderId", headers: {
+    final response = await _provider.get("/order/get/$orderId", headers: {
       HttpHeaders.authorizationHeader: 'Bearer $token',
       HttpHeaders.contentTypeHeader: 'application/json',
-      'ADS-Key':_adsKey
+      'ADS-Key': _adsKey
     });
     return CheckoutResponse.fromJson(response);
   }
-
-  
 }
