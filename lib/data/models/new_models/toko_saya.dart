@@ -11,11 +11,15 @@ class TokoSayaDataResponse {
     this.status,
     this.message,
     this.data,
+    this.links,
+    this.meta
   });
 
   String status;
   String message;
   List<TokoSayaProducts> data;
+  Links links;
+  Meta meta;
 
   factory TokoSayaDataResponse.fromJson(Map<String, dynamic> json) =>
       TokoSayaDataResponse(
@@ -25,10 +29,13 @@ class TokoSayaDataResponse {
                 ? []
                 : List<TokoSayaProducts>.from(
                     json["data"].map((x) => TokoSayaProducts.fromJson(x))),
+        links: Links.fromJson(json["links"]),
+        meta: Meta.fromJson(json["meta"]),
+        
       );
 
   Map<String, dynamic> toJson() =>
-      {"status": status, "message": message, "data": data};
+      {"status": status, "message": message, "data": data, "links":links, "meta":meta};
 }
 
 // class TokoSayaData {

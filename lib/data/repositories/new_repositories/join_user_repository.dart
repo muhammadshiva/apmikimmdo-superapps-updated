@@ -458,6 +458,17 @@ class JoinUserRepository {
     return TokoSayaDataResponse.fromJson(response);
   }
 
+  Future<TokoSayaDataResponse> getProductListWithoutBaseurl(String url) async {
+    final token = await _authenticationRepository.getToken();
+    final response = await _provider.getWithoutBaseurl(_baseUrl+url,
+        headers: {
+          HttpHeaders.authorizationHeader: 'Bearer $token',
+          HttpHeaders.contentTypeHeader: 'application/json',
+           'ADS-Key':_adsKey
+        });
+    return TokoSayaDataResponse.fromJson(response);
+  }
+
   Future<GeneralResponse> removeProduct({@required int productId}) async {
     final _token = await _authenticationRepository.getToken();
     final response = await _provider
