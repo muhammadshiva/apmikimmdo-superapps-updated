@@ -31,7 +31,7 @@ class ApiProvider {
       {Map<String, String> headers}) async {
     var responseJson;
     try {
-      final response = await http.get(url, headers: headers);
+      final response = await http.get(Uri.parse(url), headers: headers);
 
       responseJson = _returnResponse(response);
     } on SocketException {

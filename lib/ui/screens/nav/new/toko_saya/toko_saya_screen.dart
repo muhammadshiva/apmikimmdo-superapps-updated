@@ -9,7 +9,7 @@ import 'package:get/get.dart';
 import 'package:marketplace/api/api.dart';
 import 'package:marketplace/data/blocs/bottom_nav/bottom_nav_cubit.dart';
 import 'package:marketplace/data/blocs/fetch_user/fetch_user_cubit.dart';
-import 'package:marketplace/data/blocs/new_cubit/toko_saya/fetch_product_toko_saya/fetch_product_toko_saya_cubit.dart';
+import 'package:marketplace/data/blocs/new_cubit/toko_saya/fetch_product_toko_saya/fetch_product_toko_saya_bloc.dart';
 import 'package:marketplace/data/blocs/new_cubit/toko_saya/remove_product_toko_saya/remove_product_toko_saya_cubit.dart';
 import 'package:marketplace/data/blocs/user_data/user_data_cubit.dart';
 import 'package:marketplace/data/blocs/new_cubit/cart/update_quantity/update_quantity_cubit.dart';
@@ -42,20 +42,28 @@ class TokoSayaScreen extends StatefulWidget {
 }
 
 class _TokoSayaScreenState extends State<TokoSayaScreen> {
+  final _scrollController = ScrollController();
+
   bool isCustomer = false;
   bool hasShop = false;
   bool initialLoading = true;
 
   FetchUserCubit _fetchUserCubit;
-  FetchProductTokoSayaCubit _fetchProductTokoSayaCubit;
   RemoveProductTokoSayaCubit _removeProductTokoSayaCubit;
+
+  FetchProductTokoSayaBloc _fetchProductTokoSayaBloc;
+
+  List<TokoSayaProducts> tokoSayaProduct = [];
+  int currentPage = 0;
+  int lastPage = 0;
 
   @override
   void initState() {
+    _fetchProductTokoSayaBloc = FetchProductTokoSayaBloc()..add(FetchedProductTokoSaya());
     _fetchUserCubit = FetchUserCubit()..load();
-    _fetchProductTokoSayaCubit = FetchProductTokoSayaCubit()..load();
     _removeProductTokoSayaCubit = RemoveProductTokoSayaCubit();
     // updateState();
+    _scrollController.addListener(_onScroll);
     super.initState();
   }
 
@@ -65,22 +73,36 @@ class _TokoSayaScreenState extends State<TokoSayaScreen> {
   // }
 
   void shareShop(String nameShop, String slug) {
-    // Share.share(
-    //     "Yuk belanja di *${nameShop ?? 'user'}* Banyak produk baru dan promo lho! Klik disini \n https://warung.panenpanen.id/wpp/dashboard/$slug");
     Share.share(
-        "Yuk belanja di *${nameShop ?? 'user'}* Banyak produk baru dan promo lho! Klik disini \n https://reseller.apmikimmdo.com/wpp/dashboard/$slug");
+      "Yuk belanja di *${nameShop ?? 'user'}* Banyak produk baru dan promo lho! Klik disini \n https://warung.panenpanen.id/wpp/dashboard/$slug");
   }
 
   Future refreshData() async {
     _fetchUserCubit.load();
-    _fetchProductTokoSayaCubit.load();
+    _fetchProductTokoSayaBloc.add(FetchedProductTokoSaya());
+  }
+
+  void _onScroll() {
+    if (_isBottom()){
+      _fetchProductTokoSayaBloc.add(FetchedNextProductTokoSaya(tokoSayaProduct: tokoSayaProduct,currentPage: currentPage,lastPage: lastPage));
+    }
+      
+  }
+
+  bool _isBottom() {
+    return _scrollController.position.pixels >= _scrollController.position.maxScrollExtent;
+    // if (!_scrollController.hasClients) return false;
+    // final maxScroll = _scrollController.position.maxScrollExtent;
+    // final currentScroll = _scrollController.offset;
+    // return currentScroll >= (maxScroll * 0.9);
   }
 
   @override
   void dispose() {
     _fetchUserCubit.close();
-    _fetchProductTokoSayaCubit.close();
+    _fetchProductTokoSayaBloc.close();
     _removeProductTokoSayaCubit.close();
+    _scrollController.dispose();
     super.dispose();
   }
 
@@ -91,7 +113,7 @@ class _TokoSayaScreenState extends State<TokoSayaScreen> {
 
     return MultiBlocProvider(
         providers: [
-          BlocProvider(create: (_) => _fetchProductTokoSayaCubit),
+          BlocProvider(create: (_) => _fetchProductTokoSayaBloc),
           BlocProvider(create: (_) => _removeProductTokoSayaCubit),
           BlocProvider(create: (_) => _fetchUserCubit),
         ],
@@ -118,7 +140,7 @@ class _TokoSayaScreenState extends State<TokoSayaScreen> {
                   }
                   if (state is RemoveProductTokoSayaSuccess) {
                     AppExt.popScreen(context);
-                    _fetchProductTokoSayaCubit.load();
+                    _fetchProductTokoSayaBloc.add(FetchedProductTokoSaya());
                   }
                 }),
             BlocListener(
@@ -133,10 +155,20 @@ class _TokoSayaScreenState extends State<TokoSayaScreen> {
                       initialLoading = false;
                     });
                   }
-                })
+                }),
+                BlocListener<FetchProductTokoSayaBloc,FetchProductTokoSayaState>(
+                  listener: (context,state){
+                    if (state is FetchProductTokoSayaSuccess) {
+                      setState(() {
+                        tokoSayaProduct = state.tokoSayaProduct;
+                        currentPage = state.currentPage;
+                        lastPage = state.lastPage;
+                      });
+                    }
+                  }
+                )
           ],
-          child: BlocBuilder(
-              bloc: _fetchProductTokoSayaCubit,
+          child: BlocBuilder<FetchProductTokoSayaBloc,FetchProductTokoSayaState>(
               builder: (context, fetchProductTokoSayaState) => BlocBuilder(
                   bloc: _fetchUserCubit,
                   builder: (context, fetchUserState) =>
@@ -193,8 +225,11 @@ class _TokoSayaScreenState extends State<TokoSayaScreen> {
                                                                       padding: EdgeInsets
                                                                           .only(
                                                                               top: 180),
-                                                                      child: MasonryGridView
+                                                                      child: RefreshIndicator(
+                                                                        onRefresh: refreshData,
+                                                                        child: MasonryGridView
                                                                           .count(
+                                                                        controller: _scrollController,
                                                                         padding:
                                                                             EdgeInsets.only(
                                                                           top:
@@ -244,6 +279,7 @@ class _TokoSayaScreenState extends State<TokoSayaScreen> {
                                                                             13,
                                                                         crossAxisSpacing:
                                                                             13,
+                                                                      ),
                                                                       ),
                                                                     )
                                                                   : MyShopProductEmpty()
@@ -326,7 +362,7 @@ class _TokoSayaScreenState extends State<TokoSayaScreen> {
                                                                             ),
                                                                             GestureDetector(
                                                                               onTap: () {
-                                                                                shareShop(fetchUserState.user.data.reseller.name ?? 'user', fetchUserState.user.data.reseller.slug);
+                                                                                shareShop(fetchUserState.user.data.reseller.name ?? 'user',fetchUserState.user.data.reseller.slug);
                                                                               },
                                                                               child: Container(
                                                                                 padding: EdgeInsets.symmetric(horizontal: 16, vertical: 7),
