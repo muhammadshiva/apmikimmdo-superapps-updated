@@ -228,7 +228,10 @@ class _UpdateAccountScreenState extends State<UpdateAccountScreen> {
                               pinned: true,
                               shadowColor: Colors.black54,
                               floating: true,
-                              title: Text("Ubah Data Saya"),
+                              title: Text(
+                                "Ubah Data Saya",
+                                style: AppTypo.subtitle2,
+                              ),
                               brightness: Brightness.dark,
                             ),
                           ];

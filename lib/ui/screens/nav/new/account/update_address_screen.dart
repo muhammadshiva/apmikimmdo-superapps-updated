@@ -228,7 +228,10 @@ class _UpdateAddressScreenState extends State<UpdateAddressScreen> {
                               pinned: true,
                               shadowColor: Colors.black54,
                               floating: true,
-                              title: Text("Daftar Alamat"),
+                              title: Text(
+                                "Daftar Alamat",
+                                style: AppTypo.subtitle2,
+                              ),
                               brightness: Brightness.dark,
                             ),
                           ];

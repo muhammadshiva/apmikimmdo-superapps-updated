@@ -249,8 +249,13 @@ class _JoinUserProfileEntryScreenState
                       iconTheme: IconThemeData(color: Colors.black),
                       title: isUpdateEntry
                           ? Text(
-                              "Ubah Profil ${isSupplier ? 'Supplier' : 'Toko'} ")
-                          : Text("Lengkapi Profil Toko"),
+                              "Ubah Profil ${isSupplier ? 'Supplier' : 'Toko'} ",
+                              style: AppTypo.subtitle2,
+                            )
+                          : Text(
+                              "Lengkapi Profil Toko",
+                              style: AppTypo.subtitle2,
+                            ),
                     ),
                   ];
                 },
