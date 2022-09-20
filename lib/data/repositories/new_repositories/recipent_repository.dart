@@ -42,10 +42,10 @@ class RecipentRepository {
       debugPrint("MASUKK KOSONG");
       gs.write('recipentSelected', tempRecipent);
       // setSubdistrictStorage(subdistrict:"haha",subdistrictId: 0);
-    }else{
+    } else {
       gs.remove('selectedSubdistrictStorage');
     }
-     
+
     return RecipentResponse.fromJson(response);
   }
 
@@ -69,7 +69,7 @@ class RecipentRepository {
             subdistrict: response['data']['subdistrict'],
             postalCode: response['data']['postal_code'],
             note: response['data']['note']);
-           
+
         //  setSubdistrictStorage(subdistrict:response['data']['subdistrict'],subdistrictId: response['data']['subdistrict_id']);
         return RecipentObjectResponse.fromJson(response);
       } else {
@@ -93,7 +93,6 @@ class RecipentRepository {
         //  setSubdistrictStorage(subdistrict:response['data']['subdistrict'],subdistrictId: response['data']['subdistrict_id']);
         return response['data']['subdistrict_id'];
       } else {
-       
         return 0;
       }
     } else {
@@ -147,7 +146,9 @@ class RecipentRepository {
       "subdistrict_id": subdistrictId,
       "postal_code": postalCode,
       "note": note,
-      "is_main_address": 1
+      "is_main_address": 1,
+      "latitude": "1",
+      "longitude": "1",
     });
 
     var response = await dio.post(
@@ -165,6 +166,7 @@ class RecipentRepository {
 
     if (response.statusCode == 200) {
       debugPrint("SUKSESSS");
+      debugPrint(response.data.toString());
       return RecipentObjectResponse.fromJson(response.data);
     } else {
       throw GeneralException(response.data.toString());
@@ -245,7 +247,7 @@ class RecipentRepository {
         subdistrict: response['data']['subdistrict'],
         postalCode: response['data']['postal_code'],
         note: response['data']['note']);
-        // setSubdistrictStorage(subdistrict:response['data']['subdistrict'] ,subdistrictId: response['data']['subdistrict_id']);
+    // setSubdistrictStorage(subdistrict:response['data']['subdistrict'] ,subdistrictId: response['data']['subdistrict_id']);
     return RecipentObjectResponse.fromJson(response);
   }
 
@@ -260,12 +262,14 @@ class RecipentRepository {
     return gs.read('recipentSelected') ?? null;
   }
 
- Map<String, dynamic> getSelectedSubdistrictStorage() {
+  Map<String, dynamic> getSelectedSubdistrictStorage() {
     return gs.read('selectedSubdistrictStorage') ?? null;
   }
 
   int getSelectedSubdistrictIdStorage() {
-    return getSelectedSubdistrictStorage() != null ? getSelectedSubdistrictStorage()['subdistrict_id'] : 0 ?? 0 ;
+    return getSelectedSubdistrictStorage() != null
+        ? getSelectedSubdistrictStorage()['subdistrict_id']
+        : 0 ?? 0;
   }
 
   Map<String, dynamic> getSelectedRecipentNoAuth() {
@@ -295,11 +299,12 @@ class RecipentRepository {
 
   void setSubdistrictStorage({
     @required int subdistrictId,
-     @required String subdistrict,
+    @required String subdistrict,
   }) {
     gs.write('selectedSubdistrictStorage', {
       "subdistrict": subdistrict,
-      "subdistrict_id": subdistrictId,});
+      "subdistrict_id": subdistrictId,
+    });
   }
 
   void setRecipent({

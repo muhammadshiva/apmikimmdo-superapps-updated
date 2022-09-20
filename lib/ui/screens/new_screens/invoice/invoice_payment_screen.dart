@@ -731,7 +731,7 @@ class _InvoicePaymentScreenState extends State<InvoicePaymentScreen> {
                     ),
                     SizedBox(),
                     Text(
-                      "Rp ${AppExt.toRupiah(data.subtotal)}",
+                      "Rp ${AppExt.toRupiah(item.enduserPrice)}",
                       style: AppTypo.overline,
                       textAlign: TextAlign.center,
                     ),

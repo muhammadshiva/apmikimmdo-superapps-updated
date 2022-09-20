@@ -328,9 +328,10 @@ class _AddressEntryScreenState extends State<AddressEntryScreen> {
                               pinned: true,
                               shadowColor: Colors.black54,
                               floating: true,
-                              title: Text(isUpdateEntry
-                                  ? "Ubah Alamat"
-                                  : "Alamat Saya"),
+                              title: Text(
+                                isUpdateEntry ? "Ubah Alamat" : "Alamat Saya",
+                                style: AppTypo.subtitle2,
+                              ),
                               brightness: Brightness.dark,
                             ),
                           ];
