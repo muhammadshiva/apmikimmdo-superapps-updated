@@ -11,7 +11,7 @@
         </intent>
     </queries>
     <application
-        android:label="Apmikimmdo Super Apps"
+        android:label="Appsmikimmdo"
         android:icon="@mipmap/ic_launcher"
         android:usesCleartextTraffic="true"
         android:requestLegacyExternalStorage="true">
