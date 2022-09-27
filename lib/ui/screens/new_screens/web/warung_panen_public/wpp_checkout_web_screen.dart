@@ -33,12 +33,10 @@ class WppCheckoutWebScreen extends StatefulWidget {
   final AlamatPelangganWithCart alamatPelangganWithCart;
 
   @override
-  _WppCheckoutWebScreenState createState() =>
-      _WppCheckoutWebScreenState();
+  _WppCheckoutWebScreenState createState() => _WppCheckoutWebScreenState();
 }
 
-class _WppCheckoutWebScreenState
-    extends State<WppCheckoutWebScreen> {
+class _WppCheckoutWebScreenState extends State<WppCheckoutWebScreen> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   final TransactionRepository _transRepo = TransactionRepository();
 
@@ -129,8 +127,7 @@ class _WppCheckoutWebScreenState
                           body: SingleChildScrollView(
                             physics: new BouncingScrollPhysics(),
                             child: Padding(
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: 20),
+                              padding: EdgeInsets.symmetric(horizontal: 20),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.stretch,
                                 children: [
@@ -200,14 +197,20 @@ class _WppCheckoutWebScreenState
                                           if (widgetIndexTemp[i].indexWidget ==
                                               indexWidget) {
                                             debugPrint("MASUK KE 1");
-                                            widgetIndexTemp.removeWhere((element) =>
-                                                element.indexWidget == indexWidget);
-                                            shippingCodes.removeWhere((element) =>
-                                                element.indexWidget == indexWidget);
+                                            widgetIndexTemp.removeWhere(
+                                                (element) =>
+                                                    element.indexWidget ==
+                                                    indexWidget);
+                                            shippingCodes.removeWhere(
+                                                (element) =>
+                                                    element.indexWidget ==
+                                                    indexWidget);
                                             notes.removeWhere((element) =>
-                                                element.indexWidget == indexWidget);
+                                                element.indexWidget ==
+                                                indexWidget);
                                             ongkirs.removeWhere((element) =>
-                                                element.indexWidget == indexWidget);
+                                                element.indexWidget ==
+                                                indexWidget);
                                             widgetIndexTemp.add(WidgetIndexTemp(
                                               indexWidget: indexWidget,
                                             ));
@@ -256,7 +259,8 @@ class _WppCheckoutWebScreenState
                                                 previousValue + element.ongkir);
                                       });
 
-                                      debugPrint("INDEX WIDGET SAAT INI : $indexWidget");
+                                      debugPrint(
+                                          "INDEX WIDGET SAAT INI : $indexWidget");
                                       debugPrint(
                                           "LENGTH ONGKIR SAAT INI : ${widgetIndexTemp.length}");
                                     },
@@ -295,7 +299,8 @@ class _WppCheckoutWebScreenState
                                   ),
                                   Row(
                                     children: [
-                                      Text("Ongkos Kirim", style: AppTypo.overline),
+                                      Text("Ongkos Kirim",
+                                          style: AppTypo.overline),
                                       SizedBox(
                                         width: 20,
                                       ),
@@ -432,8 +437,7 @@ class _WppCheckoutWebScreenState
                             ),
                             Container(
                               padding: EdgeInsets.symmetric(
-                                  horizontal: 20,
-                                  vertical: 17),
+                                  horizontal: 20, vertical: 17),
                               color: AppColor.primary,
                               child: Row(
                                 children: [
@@ -469,33 +473,37 @@ class _WppCheckoutWebScreenState
                                           widget.cart.length,
                                       label: "Pembayaran",
                                       isCompact: true,
-                                      color: AppColor.bgBadgeLightGreen,
+                                      // color: AppColor.bgBadgeLightGreen,
+                                      color: Color(0xFFFEE2F6),
                                       textColor: AppColor.appPrimary,
                                       isUpperCase: false,
                                       elevation: 6,
                                       onPressed: () {
-                                        final WppCheckoutTempWeb dataCheckout = WppCheckoutTempWeb(
-                                                    cart: widget.cart,
-                                                    alamatPelangganWithCart: widget.alamatPelangganWithCart,
-                                                    itemId: itemIds,
-                                                    shippingCode: shippingCodes,
-                                                    note: notes,
-                                                    ongkir: ongkirs,
-                                                    subtotal: subtotalPrice,
-                                                    totalOngkir: totalOngkirPrice,
-                                                    totalPayment: subtotalPrice +
-                                                        totalOngkirPrice);
-                                              
-                                              
+                                        final WppCheckoutTempWeb dataCheckout =
+                                            WppCheckoutTempWeb(
+                                                cart: widget.cart,
+                                                alamatPelangganWithCart: widget
+                                                    .alamatPelangganWithCart,
+                                                itemId: itemIds,
+                                                shippingCode: shippingCodes,
+                                                note: notes,
+                                                ongkir: ongkirs,
+                                                subtotal: subtotalPrice,
+                                                totalOngkir: totalOngkirPrice,
+                                                totalPayment: subtotalPrice +
+                                                    totalOngkirPrice);
+
                                         if (_paymentType ==
                                             PaymentType.manual) {
-                                              debugPrint("PEMBAYARAN MANUAL");
-                                              _transRepo.setPaymentCheck(value: true);
-                                              context.beamToNamed('/wpp/payment?dt=${AppExt.encryptMyData(jsonEncode(dataCheckout))}');
+                                          debugPrint("PEMBAYARAN MANUAL");
+                                          _transRepo.setPaymentCheck(
+                                              value: true);
+                                          context.beamToNamed(
+                                              '/wpp/payment?dt=${AppExt.encryptMyData(jsonEncode(dataCheckout))}');
                                           // AppExt.pushScreen(
                                           //     context,
                                           //     PaymentScreen(
-                                          //       checkoutTemp: 
+                                          //       checkoutTemp:
                                           // CheckoutTempWeb(
                                           //           cart: widget.cart,
                                           //           itemId: itemIds,
@@ -541,4 +549,3 @@ class WidgetIndexTemp {
 
   WidgetIndexTemp({this.indexWidget});
 }
-

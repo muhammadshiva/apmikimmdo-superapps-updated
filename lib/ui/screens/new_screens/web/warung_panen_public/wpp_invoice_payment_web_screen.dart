@@ -217,7 +217,7 @@ class _WppInvoicePaymentWebScreenState
       backgroundColor: AppColor.navScaffoldBg,
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        title: Text('Invoice Warung Panen', style: AppTypo.subtitle2),
+        title: Text('Invoice', style: AppTypo.subtitle2),
         centerTitle: true,
         backgroundColor: Colors.white,
         brightness: Brightness.light,
@@ -261,7 +261,7 @@ class _WppInvoicePaymentWebScreenState
                                 Align(
                                   alignment: Alignment.center,
                                   child: Image.asset(
-                                    AppImg.img_logo,
+                                    'images/img_apmikimmdo_logo.png',
                                     fit: BoxFit.contain,
                                     height: 36,
                                   ),

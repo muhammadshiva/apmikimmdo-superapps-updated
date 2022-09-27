@@ -185,7 +185,10 @@ class _SupplierApprovedProductListScreenState
                               pinned: true,
                               shadowColor: Colors.black54,
                               floating: true,
-                              title: Text("Daftar Produk"),
+                              title: Text(
+                                "Daftar Produk",
+                                style: AppTypo.subtitle2,
+                              ),
                               brightness: Brightness.dark,
                               bottom: PreferredSize(
                                   child: Column(
