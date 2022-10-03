@@ -59,7 +59,8 @@ class _TokoSayaScreenState extends State<TokoSayaScreen> {
 
   @override
   void initState() {
-    _fetchProductTokoSayaBloc = FetchProductTokoSayaBloc()..add(FetchedProductTokoSaya());
+    _fetchProductTokoSayaBloc = FetchProductTokoSayaBloc()
+      ..add(FetchedProductTokoSaya());
     _fetchUserCubit = FetchUserCubit()..load();
     _removeProductTokoSayaCubit = RemoveProductTokoSayaCubit();
     // updateState();
@@ -74,7 +75,7 @@ class _TokoSayaScreenState extends State<TokoSayaScreen> {
 
   void shareShop(String nameShop, String slug) {
     Share.share(
-      "Yuk belanja di *${nameShop ?? 'user'}* Banyak produk baru dan promo lho! Klik disini \n https://warung.panenpanen.id/wpp/dashboard/$slug");
+        "Yuk belanja di *${nameShop ?? 'user'}* Banyak produk baru dan promo lho! Klik disini \n https://reseller.apmikimmdo.com/wpp/dashboard/$slug");
   }
 
   Future refreshData() async {
@@ -83,14 +84,17 @@ class _TokoSayaScreenState extends State<TokoSayaScreen> {
   }
 
   void _onScroll() {
-    if (_isBottom()){
-      _fetchProductTokoSayaBloc.add(FetchedNextProductTokoSaya(tokoSayaProduct: tokoSayaProduct,currentPage: currentPage,lastPage: lastPage));
+    if (_isBottom()) {
+      _fetchProductTokoSayaBloc.add(FetchedNextProductTokoSaya(
+          tokoSayaProduct: tokoSayaProduct,
+          currentPage: currentPage,
+          lastPage: lastPage));
     }
-      
   }
 
   bool _isBottom() {
-    return _scrollController.position.pixels >= _scrollController.position.maxScrollExtent;
+    return _scrollController.position.pixels >=
+        _scrollController.position.maxScrollExtent;
     // if (!_scrollController.hasClients) return false;
     // final maxScroll = _scrollController.position.maxScrollExtent;
     // final currentScroll = _scrollController.offset;
@@ -156,19 +160,19 @@ class _TokoSayaScreenState extends State<TokoSayaScreen> {
                     });
                   }
                 }),
-                BlocListener<FetchProductTokoSayaBloc,FetchProductTokoSayaState>(
-                  listener: (context,state){
-                    if (state is FetchProductTokoSayaSuccess) {
-                      setState(() {
-                        tokoSayaProduct = state.tokoSayaProduct;
-                        currentPage = state.currentPage;
-                        lastPage = state.lastPage;
-                      });
-                    }
-                  }
-                )
+            BlocListener<FetchProductTokoSayaBloc, FetchProductTokoSayaState>(
+                listener: (context, state) {
+              if (state is FetchProductTokoSayaSuccess) {
+                setState(() {
+                  tokoSayaProduct = state.tokoSayaProduct;
+                  currentPage = state.currentPage;
+                  lastPage = state.lastPage;
+                });
+              }
+            })
           ],
-          child: BlocBuilder<FetchProductTokoSayaBloc,FetchProductTokoSayaState>(
+          child: BlocBuilder<FetchProductTokoSayaBloc,
+                  FetchProductTokoSayaState>(
               builder: (context, fetchProductTokoSayaState) => BlocBuilder(
                   bloc: _fetchUserCubit,
                   builder: (context, fetchUserState) =>
@@ -225,61 +229,57 @@ class _TokoSayaScreenState extends State<TokoSayaScreen> {
                                                                       padding: EdgeInsets
                                                                           .only(
                                                                               top: 180),
-                                                                      child: RefreshIndicator(
-                                                                        onRefresh: refreshData,
+                                                                      child:
+                                                                          RefreshIndicator(
+                                                                        onRefresh:
+                                                                            refreshData,
                                                                         child: MasonryGridView
-                                                                          .count(
-                                                                        controller: _scrollController,
-                                                                        padding:
-                                                                            EdgeInsets.only(
-                                                                          top:
-                                                                              20,
-                                                                          left: _screenWidth *
-                                                                              (5 / 100),
-                                                                          right:
-                                                                              _screenWidth * (5 / 100),
+                                                                            .count(
+                                                                          controller:
+                                                                              _scrollController,
+                                                                          padding:
+                                                                              EdgeInsets.only(
+                                                                            top:
+                                                                                20,
+                                                                            left:
+                                                                                _screenWidth * (5 / 100),
+                                                                            right:
+                                                                                _screenWidth * (5 / 100),
+                                                                          ),
+                                                                          crossAxisCount:
+                                                                              2,
+                                                                          itemCount: fetchProductTokoSayaState
+                                                                              .tokoSayaProduct
+                                                                              .length,
+                                                                          itemBuilder:
+                                                                              (BuildContext context, int index) {
+                                                                            TokoSayaProducts
+                                                                                _item =
+                                                                                fetchProductTokoSayaState.tokoSayaProduct[index];
+                                                                            return GridTwoProductListItem(
+                                                                              productShop: _item,
+                                                                              isDiscount: _item.disc != null && _item.disc > 0,
+                                                                              isKomisi: false,
+                                                                              isUpgradeUser: true,
+                                                                              isShop: true,
+                                                                              onDelete: (id) {
+                                                                                BsConfirmation().show(
+                                                                                    context: context,
+                                                                                    onYes: () {
+                                                                                      _removeProductTokoSayaCubit.deleteProduct(productId: id);
+                                                                                    },
+                                                                                    title: "Apakah anda yakin ingin menghapus produk dari katalog?");
+                                                                              },
+                                                                            );
+                                                                          },
+                                                                          // staggeredTileBuilder:
+                                                                          //     (int index) =>
+                                                                          //         new StaggeredTile.fit(1),
+                                                                          mainAxisSpacing:
+                                                                              13,
+                                                                          crossAxisSpacing:
+                                                                              13,
                                                                         ),
-                                                                        crossAxisCount:
-                                                                            2,
-                                                                        itemCount: fetchProductTokoSayaState
-                                                                            .tokoSayaProduct
-                                                                            .length,
-                                                                        itemBuilder:
-                                                                            (BuildContext context,
-                                                                                int index) {
-                                                                          TokoSayaProducts
-                                                                              _item =
-                                                                              fetchProductTokoSayaState.tokoSayaProduct[index];
-                                                                          return GridTwoProductListItem(
-                                                                            productShop:
-                                                                                _item,
-                                                                            isDiscount:
-                                                                                _item.disc != null && _item.disc > 0,
-                                                                            isKomisi:
-                                                                                false,
-                                                                            isUpgradeUser:
-                                                                                true,
-                                                                            isShop:
-                                                                                true,
-                                                                            onDelete:
-                                                                                (id) {
-                                                                              BsConfirmation().show(
-                                                                                  context: context,
-                                                                                  onYes: () {
-                                                                                    _removeProductTokoSayaCubit.deleteProduct(productId: id);
-                                                                                  },
-                                                                                  title: "Apakah anda yakin ingin menghapus produk dari katalog?");
-                                                                            },
-                                                                          );
-                                                                        },
-                                                                        // staggeredTileBuilder:
-                                                                        //     (int index) =>
-                                                                        //         new StaggeredTile.fit(1),
-                                                                        mainAxisSpacing:
-                                                                            13,
-                                                                        crossAxisSpacing:
-                                                                            13,
-                                                                      ),
                                                                       ),
                                                                     )
                                                                   : MyShopProductEmpty()
@@ -362,7 +362,7 @@ class _TokoSayaScreenState extends State<TokoSayaScreen> {
                                                                             ),
                                                                             GestureDetector(
                                                                               onTap: () {
-                                                                                shareShop(fetchUserState.user.data.reseller.name ?? 'user',fetchUserState.user.data.reseller.slug);
+                                                                                shareShop(fetchUserState.user.data.reseller.name ?? 'user', fetchUserState.user.data.reseller.slug);
                                                                               },
                                                                               child: Container(
                                                                                 padding: EdgeInsets.symmetric(horizontal: 16, vertical: 7),
